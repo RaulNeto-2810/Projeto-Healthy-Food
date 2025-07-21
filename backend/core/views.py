@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from .models import Recipe
 
 # Esta view continua servindo o seu index.html com o React
 def index(request):
@@ -17,32 +18,17 @@ class TestAPIView(APIView):
     
 class RecipeListView(APIView):
     def get(self, request):
-        # Em uma aplicação real, você buscaria isso do banco de dados.
-        # Por agora, vamos apenas simular com uma lista.
-        recipes = [
+        # Busca todos os objetos Recipe do banco de dados
+        recipes_from_db = Recipe.objects.all().order_by('-created_at')
+
+        # Converte os dados para um formato que pode ser enviado como JSON
+        serialized_recipes = [
             {
-                "id": 1,
-                "title": "Salada Caesar com Frango Grelhado",
-                "description": "Uma salada clássica, completa e deliciosa, perfeita para uma refeição leve.",
-                "image_url": "https://placehold.co/600x400/4CAF50/FFFFFF?text=Salada"
-            },
-            {
-                "id": 2,
-                "title": "Smoothie Verde Detox",
-                "description": "Comece seu dia com energia! Uma mistura de espinafre, maçã verde, abacaxi e gengibre.",
-                "image_url": "https://placehold.co/600x400/2E7D32/FFFFFF?text=Smoothie"
-            },
-            {
-                "id": 3,
-                "title": "Sopa de Lentilhas Nutritiva",
-                "description": "Aconchegante e cheia de nutrientes, ideal para os dias mais frios.",
-                "image_url": "https://placehold.co/600x400/E65100/FFFFFF?text=Sopa"
-            },
-            {
-                "id": 4,
-                "title": "Wrap de Hummus e Vegetais",
-                "description": "Uma opção de almoço rápida, vegana e cheia de sabor e texturas.",
-                "image_url": "https://placehold.co/600x400/3E2723/FFFFFF?text=Wrap"
+                "id": recipe.id,
+                "title": recipe.title,
+                "description": recipe.description,
+                "image_url": recipe.image_url,
             }
+            for recipe in recipes_from_db
         ]
-        return Response(recipes)
+        return Response(serialized_recipes)

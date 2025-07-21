@@ -1,3 +1,6 @@
+# backend/core/admin.py
 from django.contrib import admin
+from .models import Recipe # Importe seu novo modelo
 
-# Register your models here.
+# Registre o modelo aqui
+admin.site.register(Recipe)
