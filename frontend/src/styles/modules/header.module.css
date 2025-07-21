@@ -1,0 +1,30 @@
+/* frontend/src/styles/modules/header.module.css */
+.header {
+    width: 100%;
+    padding: 1rem 2rem;
+    background-color: #1a1a1a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4caf50;
+    /* Verde saudável */
+}
+
+.header nav a {
+    margin: 0 1rem;
+    color: rgba(255, 255, 255, 0.87);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.25s;
+}
+
+.header nav a:hover {
+    color: #4caf50;
+}
