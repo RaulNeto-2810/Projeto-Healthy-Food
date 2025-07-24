@@ -1,22 +1,59 @@
+/* Reset básico e estilo global */
 :root {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-family: 'Inter', sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color-scheme: light;
+  color: #213547;
+  background-color: #F7F7F7;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Variáveis de espaçamento e cores personalizadas (opcional) */
+  --max-width: 1200px;
+  --padding-container: 1.5rem;
 }
 
-body {
+/* Remove margens padrão e melhora layout base */
+* {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Aplica altura total no body para layout flexível */
+html, body {
+  height: 100%;
+}
+
+/* Evita rolagem lateral */
+body {
+  overflow-x: hidden;
+  background-color: var(--background-color, #F7F7F7);
+  color: var(--text-color, #213547);
+}
+
+/* Container principal React */
+#root {
+  width: 100%;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Tipografia responsiva (opcional) */
+@media (max-width: 768px) {
+  :root {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 769px) {
+  :root {
+    font-size: 16px;
+  }
 }

@@ -1,0 +1,60 @@
+.topbarContainer {
+  display: flex;
+  flex-wrap: wrap; /* Permite quebra de linha */
+  width: 100%;
+  max-width: 1200px;
+  padding: 1.5rem 5.5rem;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 1.25rem;
+  background: #002914;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  margin-bottom: 5rem;
+}
+
+.logo {
+  height: 40px;
+  width: auto;
+}
+
+/* Navegação padrão (desktop) */
+.navigation {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* Botão */
+.button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+
+  color: #FFF;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  text-transform: capitalize;
+
+  transition: opacity 0.2s;
+}
+
+.button:hover,
+.button:focus {
+  opacity: 0.8;
+  outline: none;
+}
+
+/* Responsividade para tablets */
+@media (max-width: 1024px) {
+  .topbarContainer {
+    padding: 1.5rem 2.5rem;
+  }
+
+  .navigation {
+    gap: 1.5rem;
+  }
+}
