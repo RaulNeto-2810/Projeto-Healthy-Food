@@ -3,6 +3,7 @@
   flex-wrap: wrap; /* Permite quebra de linha */
   width: 100%;
   max-width: 1200px;
+  margin: 1.5rem auto 0;
   padding: 1.5rem 5.5rem;
   justify-content: space-between;
   align-items: center;

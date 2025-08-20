@@ -5,7 +5,8 @@
     gap: 3rem;
     width: 100%;
     max-width: 81.75rem;
-    margin-top: 4rem;
+    margin: 4rem auto 0;
+    margin-top: 12rem;
     padding: 0 2rem;
     flex-wrap: wrap;
     box-sizing: border-box;

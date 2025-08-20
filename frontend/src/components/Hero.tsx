@@ -13,7 +13,7 @@ export function Hero() {
                     Quer se alimentar de forma saudável?
                 </h1>
                 <p className={styles.paragraph}>
-                    Na Healthy Food, comer bem é mais do que uma escolha — é um estilo de vida fácil, gostoso e cheio de propósito! Aqui você encontra alimentos fresquinhos direto dos pequenos produtores da sua região, com praticidade e carinho em cada detalhe.
+                    Na Healthy Food, comer bem é mais do que uma escolha é um estilo de vida fácil, gostoso e cheio de propósito! Aqui você encontra alimentos fresquinhos direto dos pequenos produtores da sua região, com praticidade e carinho em cada detalhe.
                 </p>
                 <button className={styles.ctaButton}>
                     Crie sua conta!
