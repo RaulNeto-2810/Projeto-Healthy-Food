@@ -1,0 +1,146 @@
+/* frontend/src/components/Footer.module.css - VERSÃO FINAL */
+
+.footerContainer {
+    width: 100%;
+    padding: 8rem 8rem;
+    margin-top: 4rem;
+    background-color: #002914;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+    border-radius: 2.5rem 2.5rem 0 0;
+}
+
+.footerWrapper {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Centraliza todas as fileiras */
+    gap: 2rem;
+}
+
+/* Fileira de Cima */
+.topRow {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.linkGroup {
+    display: flex;
+    gap: 4rem;
+}
+
+.linkColumn h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+}
+
+.linkColumn a {
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.actionGroup {
+    display: flex;
+    gap: 3rem;
+    align-items: flex-start;
+}
+
+.socialColumn h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+}
+
+.socialIcons {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.socialIcons a img {
+    width: 24px;
+    height: 24px;
+}
+
+/* Fileira do Meio */
+.legalLinks {
+    display: flex;
+    gap: 3rem;
+    width: 100%;
+    justify-content: flex-start;
+    /* Alinha à esquerda no desktop */
+}
+
+/* Fileira de Baixo */
+.copyrightContent {
+    text-align: center;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.5;
+}
+
+.copyrightContent p {
+    margin: 0;
+}
+
+/* Estilos Gerais */
+.footerContainer a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 400;
+    opacity: 0.8;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.footerContainer a:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+.ctaButton {
+    background-color: #34A853;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 50px;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.ctaButton:hover {
+    background-color: #2c8f45;
+}
+
+/* Responsividade */
+@media (max-width: 900px) {
+
+    .topRow,
+    .linkGroup,
+    .actionGroup,
+    .legalLinks {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        width: 100%;
+    }
+
+    .legalLinks {
+        justify-content: center;
+        /* Centraliza na tela pequena */
+    }
+}

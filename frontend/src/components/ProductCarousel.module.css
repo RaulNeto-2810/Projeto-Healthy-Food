@@ -1,0 +1,101 @@
+/* frontend/src/components/ProductCarousel.module.css */
+
+.carouselContainer {
+    width: 100%;
+    padding: 4rem 0;
+    text-align: center;
+}
+
+.title {
+    color: #001E0C;
+    font-family: 'Zain', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    margin-top: 15.5625rem;
+}
+
+.productName {
+    font-family: 'Inter', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    height: 2.5rem;
+}
+
+.slide {
+    transform: scale(0.8);
+    transition: transform 300ms;
+    opacity: 0.5;
+    padding: 1.2rem;
+}
+
+:global(.slick-center) .slide {
+    transform: scale(1.0);
+    opacity: 1;
+}
+
+.slide img {
+    width: 100%;
+    border-radius: 20px;
+}
+
+/* --- NOVOS ESTILOS PARA OS CONTROLES --- */
+
+.controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8rem;
+    /* Espaço entre as setas */
+    margin-top: 2rem;
+    /* Espaço acima das setas */
+}
+
+.controlButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: transform 0.2s;
+}
+
+.controlButton:hover {
+    transform: scale(1.1);
+}
+
+.controlButton img {
+    width: 20px;
+    /* Tamanho das setas */
+    height: auto;
+}
+
+@media (max-width: 768px) {
+    .controls {
+        gap: 4rem;
+    }
+
+    .controlButton img {
+        width: 13px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .controls {
+        gap: 4rem;
+    }
+
+    .controlButton img {
+        width: 18px;
+    }
+}
+
+:global(.slick-slide) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+:global(.slick-list) {
+    overflow: visible !important;
+}

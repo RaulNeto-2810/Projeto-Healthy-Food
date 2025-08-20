@@ -1,5 +1,5 @@
 import styles from './Hero.module.css';
-import heroImage from '../assets/mulher-cesta.jpg';
+import heroImage from '../assets/imagens/mulher-cesta.jpg';
 
 export function Hero() {
     return (

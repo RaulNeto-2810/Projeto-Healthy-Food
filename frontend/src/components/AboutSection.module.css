@@ -1,0 +1,68 @@
+/* frontend/src/components/AboutSection.module.css */
+
+.aboutContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4rem;
+    /* Espaço entre texto e imagem */
+    width: 100%;
+    max-width: 75rem;
+    /* Largura máxima para a seção */
+    margin: 6rem auto;
+    /* Espaçamento acima e abaixo da seção */
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+.textWrapper {
+    flex: 2;
+    max-width: 40rem;
+    text-align: left;
+}
+
+.title {
+    font-family: 'Zain', sans-serif;
+    font-weight: 700;
+    font-size: 2.5rem;
+    color: #001E0C;
+    margin-bottom: 1.5rem;
+    margin-top: 5rem;
+}
+
+.paragraph {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: #333;
+}
+
+.imageWrapper {
+    flex: 1;
+    max-width: 15rem;
+}
+
+.imageWrapper img {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+    object-fit: cover;
+    aspect-ratio: 1 / 1;
+    /* Garante que o container seja um quadrado perfeito */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Deixando a seção responsiva para telas menores */
+@media (max-width: 768px) {
+    .aboutContainer {
+        flex-direction: column-reverse;
+        /* Imagem fica em cima do texto */
+        text-align: center;
+        margin: 4rem auto;
+    }
+
+    .textWrapper {
+        text-align: center;
+    }
+}

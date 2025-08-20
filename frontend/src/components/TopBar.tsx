@@ -1,4 +1,4 @@
-import logoImg from '../assets/Logo.svg'; // 1. Importa a imagem da logo
+import logoImg from '../assets/logos/Logo.svg'; // 1. Importa a imagem da logo
 import styles from './TopBar.module.css';
 
 export function TopBar() {
