@@ -1,5 +1,6 @@
 import logoImg from '../assets/logos/Logo.svg'; // 1. Importa a imagem da logo
 import styles from './TopBar.module.css';
+import { Link } from 'react-router-dom';
 
 export function TopBar() {
   return (
@@ -7,8 +8,12 @@ export function TopBar() {
       <img src={logoImg} alt="Healthy Food Logo" className={styles.logo} />
 
       <div className={styles.navigation}>
-        <button className={styles.button}>Sou Produtor</button>
-        <button className={styles.button}>Sou Cliente</button>
+        <Link to="/login-produtor" className={styles.button}>
+          Sou Produtor
+        </Link>
+        <Link to="/login" className={styles.button}>
+          Sou Cliente
+        </Link>
       </div>
     </div>
   );

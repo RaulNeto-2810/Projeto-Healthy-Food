@@ -1,5 +1,5 @@
 // frontend/src/main.tsx
-
+import '../src/globals.css'; 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
@@ -7,7 +7,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App.tsx';
 import { HomePage } from './pages/HomePage.tsx';
 import { LoginPage } from './pages/LoginPage.tsx';
-import { RegisterPage } from './pages/RegisterPage.tsx';
+import { ProducerLoginPage } from './pages/ProducerLoginPage.tsx';
 
 import './index.css';
 
@@ -27,10 +27,9 @@ const router = createBrowserRouter([
         element: <LoginPage />,
       },
       {
-        path: '/register',
-        element: <RegisterPage />,
+        path: '/login-produtor',
+        element: <ProducerLoginPage />,
       },
-      // ... adicione outras rotas aqui no futuro
     ],
   },
 ]);
