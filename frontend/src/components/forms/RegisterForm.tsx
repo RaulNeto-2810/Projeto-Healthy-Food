@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 
-export function ProducerLoginForm({
+export function RegisterForm({
     className,
     ...props
 }: React.ComponentProps<"div">) {
@@ -23,9 +23,9 @@ export function ProducerLoginForm({
         <div className={cn("flex flex-col gap-6", className)} {...props}>
             <Card>
                 <CardHeader className="px-8 px-[1.01em] py-[1.01em]">
-                    <CardTitle>Login Produtor</CardTitle>
+                    <CardTitle>Cadastro Cliente</CardTitle>
                     <CardDescription>
-                        Digite seu e-mail abaixo para acessar sua conta.
+                        Crie sua conta preenchendo os dados abaixo.
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="px-8">
@@ -33,12 +33,27 @@ export function ProducerLoginForm({
                         <FieldGroup className="gap-8">
                             <Field className="gap-3">
                                 <div className="px-[1.01em]">
-                                    <FieldLabel htmlFor="cpf_cnpj">CPF ou CNPJ</FieldLabel>
+                                    <FieldLabel htmlFor="name">Nome</FieldLabel>
                                 </div>
                                 <div className="px-[1.01em]">
                                     <Input
-                                        id="cpf_cnpj"
+                                        id="name"
                                         type="text"
+                                        placeholder="Seu nome completo"
+                                        required
+                                        className="py-[1.01em] px-3"
+                                    />
+                                </div>
+                            </Field>
+                            <Field className="gap-3">
+                                <div className="px-[1.01em]">
+                                    <FieldLabel htmlFor="phone">Celular ou Telefone</FieldLabel>
+                                </div>
+                                <div className="px-[1.01em]">
+                                    <Input
+                                        id="phone"
+                                        type="tel"
+                                        placeholder="(00) 00000-0000"
                                         required
                                         className="py-[1.01em] px-3"
                                     />
@@ -59,45 +74,52 @@ export function ProducerLoginForm({
                                 </div>
                             </Field>
                             <Field className="gap-3">
-                                <div className="flex items-center px-[1.01em]">
+                                <div className="px-[1.01em]">
                                     <FieldLabel htmlFor="password">Senha</FieldLabel>
-                                    <a
-                                        href="#"
-                                        className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                                    >
-                                        Esqueceu sua senha?
-                                    </a>
                                 </div>
                                 <div className="px-[1.01em]">
-                                    <Input 
-                                        id="password" 
-                                        type="password" 
-                                        required 
+                                    <Input
+                                        id="password"
+                                        type="password"
+                                        required
+                                        className="py-[1.01em] px-3"
+                                    />
+                                </div>
+                            </Field>
+                            <Field className="gap-3">
+                                <div className="px-[1.01em]">
+                                    <FieldLabel htmlFor="confirmPassword">Confirmar Senha</FieldLabel>
+                                </div>
+                                <div className="px-[1.01em]">
+                                    <Input
+                                        id="confirmPassword"
+                                        type="password"
+                                        required
                                         className="py-[1.01em] px-3"
                                     />
                                 </div>
                             </Field>
                             <Field className="gap-4">
                                 <div className="px-[1.01em]">
-                                    <Button 
-                                        type="submit" 
+                                    <Button
+                                        type="submit"
                                         className="w-full py-[1.01em]"
                                     >
-                                        Login
+                                        Cadastrar
                                     </Button>
                                 </div>
                                 <div className="px-[1.01em]">
-                                    <Button 
-                                        variant="outline" 
+                                    <Button
+                                        variant="outline"
                                         type="button"
                                         className="w-full py-[1.01em]"
                                     >
-                                        Fazer Login com o Google
+                                        Cadastrar com o Google
                                     </Button>
                                 </div>
                                 <div className="px-[1.01em] py-[1.01em]">
                                     <FieldDescription className="text-center">
-                                        Não tem uma conta?  <a href="/register-produtor">Cadastre-se</a>
+                                        Já tem uma conta?  <a href="/login">Faça login</a>
                                     </FieldDescription>
                                 </div>
                             </Field>

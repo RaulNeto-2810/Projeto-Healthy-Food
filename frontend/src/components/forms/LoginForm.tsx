@@ -41,7 +41,7 @@ export function LoginForm({
                                         type="email"
                                         placeholder="seuemail@example.com"
                                         required
-                                        className="py-[1.01em] px-3"
+                                        className="py-[1.01em] px-4"
                                     />
                                 </div>
                             </Field>
@@ -84,7 +84,7 @@ export function LoginForm({
                                 </div>
                                 <div className="px-[1.01em] py-[1.01em]">
                                     <FieldDescription className="text-center">
-                                        Não tem uma conta?  <a href="#">Cadastre-se</a>
+                                        Não tem uma conta?  <a href="/register">Cadastre-se</a>
                                     </FieldDescription>
                                 </div>
                             </Field>

@@ -8,6 +8,8 @@ import App from './App.tsx';
 import { HomePage } from './pages/HomePage.tsx';
 import { LoginPage } from './pages/LoginPage.tsx';
 import { ProducerLoginPage } from './pages/ProducerLoginPage.tsx';
+import { RegisterPage } from './pages/RegisterPage.tsx';
+import { ProducerRegisterPage } from './pages/ProducerRegisterPage.tsx';
 
 import './index.css';
 
@@ -30,6 +32,14 @@ const router = createBrowserRouter([
         path: '/login-produtor',
         element: <ProducerLoginPage />,
       },
+      {
+        path: '/register',
+        element: <RegisterPage />,
+      },
+      {
+        path: '/register-produtor',
+        element: <ProducerRegisterPage />,
+      }
     ],
   },
 ]);
