@@ -86,15 +86,6 @@ export function ProducerLoginForm({
                                         Login
                                     </Button>
                                 </div>
-                                <div className="px-[1.01em]">
-                                    <Button 
-                                        variant="outline" 
-                                        type="button"
-                                        className="w-full py-[1.01em]"
-                                    >
-                                        Fazer Login com o Google
-                                    </Button>
-                                </div>
                                 <div className="px-[1.01em] py-[1.01em]">
                                     <FieldDescription className="text-center">
                                         Não tem uma conta?  <a href="/register-produtor">Cadastre-se</a>

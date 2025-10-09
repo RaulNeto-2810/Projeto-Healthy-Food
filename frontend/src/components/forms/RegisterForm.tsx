@@ -240,7 +240,7 @@ export function RegisterForm({
                                 <div className="px-[1.01em] py-[1.01em]">
                                     <FieldDescription className="text-center">
                                         Já tem uma conta?{" "}
-                                        <Link to="/login" className="underline font-semibold text-gray-600">
+                                        <Link to="/login" className="text-center">
                                             Faça login
                                         </Link>
                                     </FieldDescription>
