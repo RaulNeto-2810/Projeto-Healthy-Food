@@ -1,0 +1,12 @@
+/* frontend/src/pages/ClientDashboardPage.module.css */
+
+.dashboardLayout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.mainContent {
+    flex-grow: 1;
+    padding: 2rem 8.5rem;
+}

@@ -1,0 +1,106 @@
+/* frontend/src/components/DashboardTopbar.module.css */
+
+.topbarContainer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* Melhor para alinhar os 3 blocos */
+    gap: 2rem;
+    /* 32px */
+    padding: 1rem 4rem;
+    /* 16px 64px */
+    background-color: #00401f;
+    /* --color-darkslategray-100 */
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+}
+
+.logo {
+    height: 40px;
+    /* Altura controlada para consistência */
+    width: auto;
+}
+
+.searchWrapper {
+    flex-grow: 1;
+    /* Permite que a barra de pesquisa ocupe o espaço central */
+    display: flex;
+    justify-content: center;
+}
+
+.searchContainer {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    /* Largura máxima da barra */
+}
+
+.searchInput {
+    width: 100%;
+    border-radius: 9999px;
+    /* Arredondado */
+    background-color: #fff;
+    padding: 0.5rem 2.5rem 0.5rem 1.5rem;
+    /* Espaço para o ícone */
+    font-size: 1rem;
+    color: #002914;
+    border: none;
+    box-sizing: border-box;
+}
+
+.searchInput::placeholder {
+    color: rgba(0, 41, 20, 0.6);
+    /* --color-darkslategray-200 */
+}
+
+.searchIcon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(0, 41, 20, 0.8);
+    font-size: 1.25rem;
+}
+
+.iconGroup {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    /* 32px */
+}
+
+.iconButton {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    position: relative;
+    font-size: 1.75rem;
+    /* Ajuste para o tamanho dos ícones */
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.iconButton:hover {
+    color: #11af33;
+    /* --color-limegreen */
+}
+
+.cartBadge {
+    position: absolute;
+    top: -5px;
+    right: -8px;
+    background-color: #11af33;
+    /* --color-limegreen */
+    color: #fff;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

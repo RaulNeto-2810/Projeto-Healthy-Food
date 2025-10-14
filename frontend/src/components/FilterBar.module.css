@@ -1,0 +1,74 @@
+/* frontend/src/components/FilterBar.module.css */
+
+.filterSection {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+}
+
+.title {
+    font-family: 'Zain', sans-serif;
+    font-size: 32px;
+    color: #00401f;
+    font-weight: 400;
+    margin: 0;
+}
+
+.controlsContainer {
+    display: flex;
+    justify-content: flex-start;
+    gap: 1.2rem;
+}
+
+.filterButton {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.2rem 0.8rem;
+    background-color: transparent;
+    border: 1.5px solid #00401f;
+    border-radius: 5px;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #00401f;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.filterButton:hover {
+    background-color: #002914;
+    color: #fff;
+}
+
+.filterButton ion-icon {
+    font-size: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .filterSection {
+        /* Centraliza tudo na tela do celular */
+        align-items: center;
+        text-align: center;
+    }
+
+    .title {
+        font-size: 2.5rem;
+        /* Diminui o tamanho da fonte do título (era 48px) */
+    }
+
+    .controlsContainer {
+        /* Permite que os botões quebrem a linha se não couberem */
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .filterButton {
+        font-size: 1rem;
+        /* Diminui a fonte dos botões (era 24px) */
+        padding: 0.5rem 1rem;
+        /* Diminui o preenchimento interno */
+    }
+}
