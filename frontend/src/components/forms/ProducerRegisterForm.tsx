@@ -100,7 +100,7 @@ export function ProducerRegisterForm({
             );
 
             alert('Cadastro realizado com sucesso! Você será redirecionado para a tela de login.');
-            navigate('/login');
+            navigate('/login-produtor');
 
         } catch (err: unknown) {
             if (axios.isAxiosError(err) && err.response?.data) {

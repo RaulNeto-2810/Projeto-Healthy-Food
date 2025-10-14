@@ -10,6 +10,9 @@ import { LoginPage } from './pages/LoginPage.tsx';
 import { ProducerLoginPage } from './pages/ProducerLoginPage.tsx';
 import { RegisterPage } from './pages/RegisterPage.tsx';
 import { ProducerRegisterPage } from './pages/ProducerRegisterPage.tsx';
+import { ClientDashboardPage } from './pages/ClientDashboardPage.tsx';  
+import { ProducerDashboardPage } from './pages/ProducerDashboardPage.tsx'; 
+
 
 import './index.css';
 
@@ -39,7 +42,15 @@ const router = createBrowserRouter([
       {
         path: '/register-produtor',
         element: <ProducerRegisterPage />,
-      }
+      },
+            {
+        path: '/dashboard-cliente',
+        element: <ClientDashboardPage />,
+      },
+      {
+        path: '/dashboard-produtor',
+        element: <ProducerDashboardPage />,
+      },
     ],
   },
 ]);

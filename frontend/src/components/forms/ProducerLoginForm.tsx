@@ -1,24 +1,80 @@
-import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
+// frontend/src/components/forms/ProducerLoginForm.tsx
+
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
-} from '@/components/ui/card'
+} from "@/components/ui/card";
 import {
     Field,
     FieldDescription,
     FieldGroup,
     FieldLabel,
-} from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 
 export function ProducerLoginForm({
     className,
     ...props
 }: React.ComponentProps<"div">) {
+    const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+        cpf_cnpj: "",
+        email: "",
+        password: "",
+    });
+    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({ ...formData, [e.target.id]: e.target.value });
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setError(null);
+        setLoading(true);
+
+        try {
+            // Envia dados para API Django
+            const response = await axios.post("http://127.0.0.1:8000/api/auth/login/", {
+                cpf_cnpj: formData.cpf_cnpj,
+                email: formData.email,
+                password: formData.password,
+            });
+
+            const { access_token } = response.data;
+
+            // Salva token e define header padrão
+            localStorage.setItem("authToken", access_token);
+            axios.defaults.headers.common["Authorization"] = `Bearer ${access_token}`;
+
+            // Redireciona para dashboard do produtor
+            navigate("/dashboard-produtor");
+        } catch (err: unknown) {
+            if (axios.isAxiosError(err)) {
+                console.error("Erro no login:", err.response?.data);
+                if (err.response?.data?.cpf_cnpj) {
+                    setError(err.response.data.cpf_cnpj[0]);
+                } else {
+                    setError("CPF/CNPJ, e-mail ou senha inválidos. Tente novamente.");
+                }
+            } else {
+                setError("Ocorreu um erro inesperado. Tente novamente.");
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <div className={cn("flex flex-col gap-6", className)} {...props}>
             <Card>
@@ -29,7 +85,7 @@ export function ProducerLoginForm({
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="px-8">
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <FieldGroup className="gap-8">
                             <Field className="gap-3">
                                 <div className="px-[1.01em]">
@@ -40,10 +96,13 @@ export function ProducerLoginForm({
                                         id="cpf_cnpj"
                                         type="text"
                                         required
+                                        value={formData.cpf_cnpj}
+                                        onChange={handleChange}
                                         className="py-[1.01em] px-3"
                                     />
                                 </div>
                             </Field>
+
                             <Field className="gap-3">
                                 <div className="px-[1.01em]">
                                     <FieldLabel htmlFor="email">Email</FieldLabel>
@@ -54,10 +113,13 @@ export function ProducerLoginForm({
                                         type="email"
                                         placeholder="seuemail@example.com"
                                         required
+                                        value={formData.email}
+                                        onChange={handleChange}
                                         className="py-[1.01em] px-3"
                                     />
                                 </div>
                             </Field>
+
                             <Field className="gap-3">
                                 <div className="flex items-center px-[1.01em]">
                                     <FieldLabel htmlFor="password">Senha</FieldLabel>
@@ -69,26 +131,34 @@ export function ProducerLoginForm({
                                     </a>
                                 </div>
                                 <div className="px-[1.01em]">
-                                    <Input 
-                                        id="password" 
-                                        type="password" 
-                                        required 
+                                    <Input
+                                        id="password"
+                                        type="password"
+                                        required
+                                        value={formData.password}
+                                        onChange={handleChange}
                                         className="py-[1.01em] px-3"
                                     />
                                 </div>
                             </Field>
+
+                            {error && (
+                                <p className="text-red-500 text-sm text-center">{error}</p>
+                            )}
+
                             <Field className="gap-4">
                                 <div className="px-[1.01em]">
-                                    <Button 
-                                        type="submit" 
+                                    <Button
+                                        type="submit"
                                         className="w-full py-[1.01em]"
+                                        disabled={loading}
                                     >
-                                        Login
+                                        {loading ? "Entrando..." : "login-produtor"}
                                     </Button>
                                 </div>
                                 <div className="px-[1.01em] py-[1.01em]">
                                     <FieldDescription className="text-center">
-                                        Não tem uma conta?  <a href="/register-produtor">Cadastre-se</a>
+                                        Não tem uma conta? <a href="/register-produtor">Cadastre-se</a>
                                     </FieldDescription>
                                 </div>
                             </Field>
@@ -97,5 +167,5 @@ export function ProducerLoginForm({
                 </CardContent>
             </Card>
         </div>
-    )
+    );
 }
