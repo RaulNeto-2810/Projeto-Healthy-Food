@@ -1,0 +1,74 @@
+/* frontend/src/pages/ProducerDashboardPage.module.css */
+
+.dashboardLayout {
+    display: grid;
+    min-height: 100vh;
+    width: 100%;
+    grid-template-columns: 1fr;
+    /* Padrão para mobile */
+}
+
+@media (min-width: 1024px) {
+    .dashboardLayout {
+        grid-template-columns: 280px 1fr;
+        /* Sidebar + Conteúdo em telas grandes */
+    }
+}
+
+.mainWrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.mainContent {
+    flex: 1;
+    background-color: #f9fafb;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.metricsGrid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(1, 1fr);
+}
+
+.metricCard {
+    padding: 1.05em;
+}
+
+@media (min-width: 768px) {
+    .metricsGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .metricsGrid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.chartsGrid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 1024px) {
+    .chartsGrid {
+        grid-template-columns: repeat(7, 1fr);
+    }
+
+    .chartCard {
+        grid-column: span 4;
+        padding: 1.05em;
+    }
+
+    .tableCard {
+        grid-column: span 3;
+        padding: 1.05em;
+    }
+}

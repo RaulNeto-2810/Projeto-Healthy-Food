@@ -1,56 +1,49 @@
 // frontend/src/main.tsx
-import '../src/globals.css'; 
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
+import './globals.css';
+import './index.css';
+
 import App from './App.tsx';
 import { HomePage } from './pages/HomePage.tsx';
 import { LoginPage } from './pages/LoginPage.tsx';
-import { ProducerLoginPage } from './pages/ProducerLoginPage.tsx';
 import { RegisterPage } from './pages/RegisterPage.tsx';
+import { ProducerLoginPage } from './pages/ProducerLoginPage.tsx';
 import { ProducerRegisterPage } from './pages/ProducerRegisterPage.tsx';
-import { ClientDashboardPage } from './pages/ClientDashboardPage.tsx';  
-import { ProducerDashboardPage } from './pages/ProducerDashboardPage.tsx'; 
+import { ClientDashboardPage } from './pages/ClientDashboardPage.tsx';
+import { ProducerDashboardPage } from './pages/ProducerDashboardPage.tsx';
+
+// 1. Importe as novas páginas
+import { MyProductsPage } from './pages/MyProductsPage.tsx';
+import { OrdersPage } from './pages/OrdersPage.tsx';
+import { ReportsPage } from './pages/ReportsPage.tsx';
+import { StoreProfilePage } from './pages/StoreProfilePage.tsx';
+import { ReviewsPage } from './pages/ReviewsPage.tsx';
 
 
-import './index.css';
-
-// Aqui definimos todas as rotas da nossa aplicação
+// 2. Adicione as novas rotas
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />, // O App é o elemento pai (layout)
+    element: <App />,
     children: [
-      // As rotas filhas são renderizadas dentro do <Outlet /> do App
-      {
-        index: true, // <-- MUDANÇA AQUI: de 'path: "/"' para 'index: true'
-        element: <HomePage />,
-      },
-      {
-        path: '/login',
-        element: <LoginPage />,
-      },
-      {
-        path: '/login-produtor',
-        element: <ProducerLoginPage />,
-      },
-      {
-        path: '/register',
-        element: <RegisterPage />,
-      },
-      {
-        path: '/register-produtor',
-        element: <ProducerRegisterPage />,
-      },
-            {
-        path: '/dashboard-cliente',
-        element: <ClientDashboardPage />,
-      },
-      {
-        path: '/dashboard-produtor',
-        element: <ProducerDashboardPage />,
-      },
+      { index: true, element: <HomePage /> },
+      { path: '/login', element: <LoginPage /> },
+      { path: '/register', element: <RegisterPage /> },
+      { path: '/login-produtor', element: <ProducerLoginPage /> },
+      { path: '/register-produtor', element: <ProducerRegisterPage /> },
+      { path: '/dashboard-cliente', element: <ClientDashboardPage /> },
+
+      // Rotas do Dashboard do Produtor
+      { path: '/dashboard-produtor', element: <ProducerDashboardPage /> },
+      { path: '/dashboard-produtor/produtos', element: <MyProductsPage /> },
+      { path: '/dashboard-produtor/pedidos', element: <OrdersPage /> },
+      { path: '/dashboard-produtor/relatorios', element: <ReportsPage /> },
+      { path: '/dashboard-produtor/perfil', element: <StoreProfilePage /> },
+      { path: '/dashboard-produtor/avaliacoes', element: <ReviewsPage /> },
     ],
   },
 ]);
