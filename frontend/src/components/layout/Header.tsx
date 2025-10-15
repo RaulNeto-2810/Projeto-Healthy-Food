@@ -2,16 +2,17 @@
 
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-import { IonIcon } from '@ionic/react'; // 1. Importe o IonIcon
-import { logOutOutline } from 'ionicons/icons'; // 2. Importe o ícone de logout
+import { IonIcon } from '@ionic/react';
+import { logOutOutline } from 'ionicons/icons';
 import styles from './Header.module.css';
 
-// Interface para as props do Header
+// 1. A interface agora inclui a prop 'actions', que pode ser qualquer elemento React (JSX)
 interface HeaderProps {
     title: string;
+    actions?: React.ReactNode; // Prop opcional para os botões de ação
 }
 
-export function Header({ title }: HeaderProps) {
+export function Header({ title, actions }: HeaderProps) {
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -24,13 +25,16 @@ export function Header({ title }: HeaderProps) {
         <header className={styles.headerContainer}>
             <h1 className={styles.headerTitle}>{title}</h1>
 
-            <button className={styles.addButton}>+ Adicionar Produto</button>
+            {/* 2. Div para agrupar as ações da direita */}
+            <div className={styles.actionsWrapper}>
+                {/* O 'actions' (nosso botão) será renderizado aqui, se for passado pela página */}
+                {actions}
 
-            {/* 3. Substituímos o DropdownMenu por um botão simples */}
-            <button onClick={handleLogout} className={styles.logoutButton}>
-                <IonIcon icon={logOutOutline} />
-            </button>
-
+                {/* Botão de logout com ícone */}
+                <button onClick={handleLogout} className={styles.logoutButton}>
+                    <IonIcon icon={logOutOutline} />
+                </button>
+            </div>
         </header>
     );
 }

@@ -52,3 +52,10 @@
 .logoutButton:hover {
     color: #ef4444;
 }
+
+.actionsWrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    /* Espaço entre o botão "+ Adicionar" e o de "Logout" */
+}

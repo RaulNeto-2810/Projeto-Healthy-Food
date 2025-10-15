@@ -1,0 +1,145 @@
+/* MyProductsPage.module.css */
+
+.cardHeader {
+    padding: 1.5rem;
+}
+
+.tableHead {
+    padding: 1rem;
+}
+
+.tableHeadRight {
+    padding: 1rem;
+    text-align: right;
+}
+
+.tableHeadCenter {
+    padding: 1rem;
+    text-align: center;
+}
+
+.tableCell {
+    padding: 1rem;
+}
+
+.tableCellMedium {
+    padding: 1rem;
+    font-weight: 500;
+}
+
+.tableCellRight {
+    padding: 1rem;
+    text-align: right;
+}
+
+.tableCellCenter {
+    padding: 1rem;
+    text-align: center;
+}
+
+.tableCellActions {
+
+    text-align: right;
+    vertical-align: middle;
+}
+
+.statusBadge {
+    padding: 0.4em 0.8em;
+}
+
+.actionsContainer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.deleteButton {
+    transition: color 0.2s;
+}
+
+.deleteButton:hover {
+    color: #ef4444;
+}
+
+.iconButton {
+    font-size: 1.125rem;
+}
+
+/* Estilo para o pop-up de Adicionar/Editar */
+.dialogContent {
+    max-width: 550px;
+    width: 100%;
+    padding: 1.5rem;
+}
+
+.dialogContent > div:first-child {
+    margin-bottom: 1.25rem;
+}
+
+.dialogContent form {
+    padding: 0;
+    margin: 0;
+}
+
+.dialogContent form > div {
+    margin-bottom: 1.25rem;
+}
+
+.dialogContent form > div:last-child {
+    margin-bottom: 0;
+    margin-top: 1.5rem;
+}
+
+.dialogContent form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+.dialogContent form input,
+.dialogContent form button[role="combobox"] {
+    width: 100%;
+}
+
+.dialogContent form button[type="submit"] {
+    width: auto;
+    min-width: 120px;
+    padding: 0.5rem 2rem;
+}
+
+/* Estilo para o pop-up de Deletar */
+.alertDialogContent {
+    max-width: 450px;
+    width: 100%;
+    padding: 1.5rem;
+}
+
+.alertDialogContent > div:first-child {
+    margin-bottom: 1.5rem;
+}
+
+.alertDialogContent h2 {
+    margin-bottom: 0.75rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+.alertDialogContent p {
+    color: #6b7280;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+/* Estilizar botões no AlertDialog */
+.alertDialogContent footer {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+.alertDialogContent footer button {
+    min-width: 100px;
+    padding: 0.5rem 1.5rem;
+}
