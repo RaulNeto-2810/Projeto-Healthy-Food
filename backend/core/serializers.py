@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 from dj_rest_auth.registration.serializers import RegisterSerializer
-from .models import ProducerProfile
+from .models import ProducerProfile, Product 
 
 class ProducerRegisterSerializer(RegisterSerializer):
     # Definimos os campos extras que virão do formulário
@@ -19,3 +19,35 @@ class ProducerRegisterSerializer(RegisterSerializer):
             cpf_cnpj=self.validated_data.get('cpf_cnpj', ''),
             phone=self.validated_data.get('phone', '')
         )
+        
+# --- ADICIONE A CLASSE ABAIXO ---
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = '__all__'
+        # O campo 'owner' não será enviado pelo frontend, ele será definido automaticamente.
+        read_only_fields = ('owner', 'created_at', 'updated_at')
+
+    def validate_name(self, value):
+        """Valida que o nome do produto não seja vazio."""
+        if not value or value.strip() == '':
+            raise serializers.ValidationError("O nome do produto não pode ser vazio.")
+        return value.strip()
+
+    def validate_price(self, value):
+        """Valida que o preço seja positivo."""
+        if value <= 0:
+            raise serializers.ValidationError("O preço deve ser maior que zero.")
+        return value
+
+    def validate_stock(self, value):
+        """Valida que o estoque não seja negativo."""
+        if value < 0:
+            raise serializers.ValidationError("O estoque não pode ser negativo.")
+        return value
+
+    def validate_category(self, value):
+        """Valida que a categoria não seja vazia."""
+        if not value or value.strip() == '':
+            raise serializers.ValidationError("A categoria é obrigatória.")
+        return value.strip()

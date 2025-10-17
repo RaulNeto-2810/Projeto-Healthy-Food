@@ -1,6 +1,7 @@
 // frontend/src/pages/MyProductsPage.tsx
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axiosInstance from "@/lib/axiosConfig";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Header } from "@/components/layout/Header";
 import { ProductForm } from "@/components/forms/ProductForm";
@@ -12,26 +13,42 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { IonIcon } from "@ionic/react";
 import { createOutline, trashOutline } from "ionicons/icons";
-import type { Product } from '@/types'; // <-- 1. IMPORTE AQUI
+import type { Product } from '@/types';
 
 import dashboardStyles from '../styles/modules/ProducerDashboardPage.module.css';
 import pageStyles from '../styles/modules/MyProductsPage.module.css';
 import headerStyles from '@/components/layout/Header.module.css';
 
-const initialProducts: Product[] = [
-    { id: 'PROD-001', name: 'Tomate Orgânico (Kg)', status: 'Ativo', price: 12.50, category: 'Frutas e Legumes', stock: 50 },
-    { id: 'PROD-002', name: 'Alface Crespa Hidropônica (Unidade)', status: 'Ativo', price: 4.00, category: 'Verduras', stock: 120 },
-    { id: 'PROD-003', name: 'Ovos Caipiras (Dúzia)', status: 'Inativo', price: 15.00, category: 'Ovos e Laticínios', stock: 0 },
-    { id: 'PROD-004', name: 'Queijo Minas Frescal (500g)', status: 'Ativo', price: 25.00, category: 'Ovos e Laticínios', stock: 20 },
-    { id: 'PROD-005', name: 'Banana Prata Orgânica (Kg)', status: 'Ativo', price: 8.90, category: 'Frutas e Legumes', stock: 80 },
-];
-
 export function MyProductsPage() {
-    const [products, setProducts] = useState<Product[]>(initialProducts);
+    const [products, setProducts] = useState<Product[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [isAlertOpen, setIsAlertOpen] = useState(false);
     const [editingProduct, setEditingProduct] = useState<Product | null>(null);
     const [deletingProductId, setDeletingProductId] = useState<string | null>(null);
+
+    const fetchProducts = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await axiosInstance.get('/api/products/');
+            setProducts(response.data);
+        } catch (err: any) {
+            // Se for erro 401, o interceptor já vai redirecionar para login
+            if (err.response?.status !== 401) {
+                setError("Não foi possível carregar os produtos.");
+            }
+            console.error("Erro ao buscar produtos:", err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchProducts();
+    }, []);
 
     const handleOpenAddDialog = () => {
         setEditingProduct(null);
@@ -48,21 +65,52 @@ export function MyProductsPage() {
         setIsAlertOpen(true);
     };
 
-    const handleFormSubmit = (productData: Product) => {
-        if (editingProduct && editingProduct.id) {
-            setProducts(products.map(p => p.id === editingProduct.id ? { ...p, ...productData } : p));
-        } else {
-            const newProduct = { ...productData, id: `PROD-${Date.now()}` };
-            setProducts([...products, newProduct]);
+    const handleFormSubmit = async (productData: Product) => {
+        try {
+            if (editingProduct && editingProduct.id) {
+                await axiosInstance.put(`/api/products/${editingProduct.id}/`, productData);
+            } else {
+                await axiosInstance.post('/api/products/', productData);
+            }
+            setIsDialogOpen(false);
+            fetchProducts();
+        } catch (err: any) {
+            console.error("Erro ao salvar o produto:", err);
+
+            // Tratamento de erros mais específico
+            // 401 já é tratado pelo interceptor
+            if (err.response?.status === 403) {
+                alert("Você não tem permissão para realizar esta ação.");
+            } else if (err.response?.data && err.response?.status !== 401) {
+                // Mostra erros de validação do backend
+                const errorMessages = Object.values(err.response.data).flat().join('\n');
+                alert(`Erro ao salvar produto:\n${errorMessages}`);
+            } else if (err.response?.status !== 401) {
+                alert("Falha ao salvar o produto. Verifique os dados e tente novamente.");
+            }
         }
-        setIsDialogOpen(false);
     };
 
-    const handleDeleteConfirm = () => {
+    const handleDeleteConfirm = async () => {
         if (deletingProductId) {
-            setProducts(products.filter(p => p.id !== deletingProductId));
+            try {
+                await axiosInstance.delete(`/api/products/${deletingProductId}/`);
+                setIsAlertOpen(false);
+                fetchProducts();
+            } catch (err: any) {
+                console.error("Erro ao deletar o produto:", err);
+
+                // Tratamento de erros mais específico
+                // 401 já é tratado pelo interceptor
+                if (err.response?.status === 403) {
+                    alert("Você não tem permissão para deletar este produto.");
+                } else if (err.response?.status === 404) {
+                    alert("Produto não encontrado.");
+                } else if (err.response?.status !== 401) {
+                    alert("Falha ao deletar o produto.");
+                }
+            }
         }
-        setIsAlertOpen(false);
     };
 
     return (
@@ -86,55 +134,61 @@ export function MyProductsPage() {
                             </CardDescription>
                         </CardHeader>
                         <CardContent className={pageStyles.cardHeader}>
-                            <Table>
-                                {/* O CABEÇALHO COMPLETO QUE ESTAVA FALTANDO */}
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead className={pageStyles.tableHead}>Produto</TableHead>
-                                        <TableHead className={pageStyles.tableHead}>Categoria</TableHead>
-                                        <TableHead className={pageStyles.tableHead}>Status</TableHead>
-                                        <TableHead className={pageStyles.tableHeadCenter}>Estoque</TableHead>
-                                        <TableHead className={pageStyles.tableHeadRight}>Preço</TableHead>
-                                        <TableHead className={pageStyles.tableHeadRight}>Ações</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {products.map((product) => (
-                                        <TableRow key={product.id}>
-                                            {/* AS CÉLULAS COMPLETAS QUE ESTAVAM FALTANDO */}
-                                            <TableCell className={pageStyles.tableCellMedium}>{product.name}</TableCell>
-                                            <TableCell className={pageStyles.tableCell}>{product.category}</TableCell>
-                                            <TableCell className={pageStyles.tableCell}>
-                                                <Badge variant={product.status === 'Ativo' ? 'default' : 'destructive'} className={pageStyles.statusBadge}>
-                                                    {product.status}
-                                                </Badge>
-                                            </TableCell>
-                                            <TableCell className={pageStyles.tableCellCenter}>{product.stock}</TableCell>
-                                            <TableCell className={pageStyles.tableCellRight}>
-                                                {product.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-                                            </TableCell>
-                                            <TableCell className={pageStyles.tableCellActions}>
-                                                <div className={pageStyles.actionsContainer}>
-                                                    <Button variant="ghost" size="icon" onClick={() => handleOpenEditDialog(product)}>
-                                                        <IonIcon icon={createOutline} className={pageStyles.iconButton} />
-                                                    </Button>
-                                                    <Button variant="ghost" size="icon" className={pageStyles.deleteButton} onClick={() => handleOpenDeleteAlert(product.id!)}>
-                                                        <IonIcon icon={trashOutline} className={pageStyles.iconButton} />
-                                                    </Button>
-                                                </div>
-                                            </TableCell>
+                            {loading && <p className="text-center text-gray-500">Carregando produtos...</p>}
+                            {error && <p className="text-center text-red-500">{error}</p>}
+                            {!loading && !error && (
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead className={pageStyles.tableHead}>Produto</TableHead>
+                                            <TableHead className={pageStyles.tableHead}>Categoria</TableHead>
+                                            <TableHead className={pageStyles.tableHead}>Status</TableHead>
+                                            <TableHead className={pageStyles.tableHeadCenter}>Estoque</TableHead>
+                                            <TableHead className={pageStyles.tableHeadRight}>Preço</TableHead>
+                                            <TableHead className={pageStyles.tableHeadRight}>Ações</TableHead>
                                         </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {products.length === 0 ? (
+                                            <TableRow>
+                                                <TableCell colSpan={6} className="text-center text-gray-500 h-24">Nenhum produto cadastrado.</TableCell>
+                                            </TableRow>
+                                        ) : (
+                                            products.map((product) => (
+                                                <TableRow key={product.id}>
+                                                    <TableCell className={pageStyles.tableCellMedium}>{product.name}</TableCell>
+                                                    <TableCell className={pageStyles.tableCell}>{product.category}</TableCell>
+                                                    <TableCell className={pageStyles.tableCell}>
+                                                        <Badge variant={product.status === 'Ativo' ? 'default' : 'destructive'} className={pageStyles.statusBadge}>
+                                                            {product.status}
+                                                        </Badge>
+                                                    </TableCell>
+                                                    <TableCell className={pageStyles.tableCellCenter}>{product.stock}</TableCell>
+                                                    <TableCell className={pageStyles.tableCellRight}>
+                                                        {product.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                                                    </TableCell>
+                                                    <TableCell className={pageStyles.tableCellActions}>
+                                                        <div className={pageStyles.actionsContainer}>
+                                                            <Button variant="ghost" size="icon" onClick={() => handleOpenEditDialog(product)}>
+                                                                <IonIcon icon={createOutline} className={pageStyles.iconButton} />
+                                                            </Button>
+                                                            <Button variant="ghost" size="icon" className={pageStyles.deleteButton} onClick={() => handleOpenDeleteAlert(product.id!)}>
+                                                                <IonIcon icon={trashOutline} className={pageStyles.iconButton} />
+                                                            </Button>
+                                                        </div>
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))
+                                        )}
+                                    </TableBody>
+                                </Table>
+                            )}
                         </CardContent>
                     </Card>
                 </main>
             </div>
 
-            {/* Pop-up (Dialog) de Adicionar/Editar Produto */}
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                {/* ADICIONE A CLASSE AQUI */}
                 <DialogContent className={pageStyles.dialogContent}>
                     <DialogHeader>
                         <DialogTitle>{editingProduct ? 'Editar Produto' : 'Adicionar Novo Produto'}</DialogTitle>
@@ -143,9 +197,7 @@ export function MyProductsPage() {
                 </DialogContent>
             </Dialog>
 
-            {/* Alerta de Confirmação para Deletar */}
             <AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
-                {/* ADICIONE A CLASSE AQUI */}
                 <AlertDialogContent className={pageStyles.alertDialogContent}>
                     <AlertDialogHeader>
                         <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>

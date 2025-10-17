@@ -50,18 +50,44 @@ export function ProductForm({ product, onSubmit }: ProductFormProps) {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
+        // Validações no frontend
+        if (!formData.name || formData.name.trim() === '') {
+            alert('O nome do produto é obrigatório.');
+            return;
+        }
+        if (!formData.category || formData.category.trim() === '') {
+            alert('A categoria é obrigatória.');
+            return;
+        }
+        if (formData.price <= 0) {
+            alert('O preço deve ser maior que zero.');
+            return;
+        }
+        if (formData.stock < 0) {
+            alert('O estoque não pode ser negativo.');
+            return;
+        }
+
         onSubmit(formData);
     };
 
     return (
         <form onSubmit={handleSubmit} className={styles.productForm}>
             <div className={styles.formField}>
-                <Label htmlFor="name" className={styles.formLabel}>Nome</Label>
-                <Input id="name" name="name" value={formData.name} onChange={handleChange} />
+                <Label htmlFor="name" className={styles.formLabel}>Nome *</Label>
+                <Input
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    placeholder="Digite o nome do produto"
+                />
             </div>
             <div className={styles.formField}>
-                <Label htmlFor="category" className={styles.formLabel}>Categoria</Label>
-                <Select onValueChange={(value) => handleSelectChange('category', value)} value={formData.category}>
+                <Label htmlFor="category" className={styles.formLabel}>Categoria *</Label>
+                <Select onValueChange={(value) => handleSelectChange('category', value)} value={formData.category} required>
                     <SelectTrigger className={styles.selectTrigger}>
                         <SelectValue placeholder="Selecione uma categoria" />
                     </SelectTrigger>
@@ -73,12 +99,31 @@ export function ProductForm({ product, onSubmit }: ProductFormProps) {
                 </Select>
             </div>
             <div className={styles.formField}>
-                <Label htmlFor="stock" className={styles.formLabel}>Estoque</Label>
-                <Input id="stock" name="stock" type="number" value={formData.stock} onChange={handleChange} />
+                <Label htmlFor="stock" className={styles.formLabel}>Estoque *</Label>
+                <Input
+                    id="stock"
+                    name="stock"
+                    type="number"
+                    value={formData.stock}
+                    onChange={handleChange}
+                    required
+                    min="0"
+                    placeholder="0"
+                />
             </div>
             <div className={styles.formField}>
-                <Label htmlFor="price" className={styles.formLabel}>Preço</Label>
-                <Input id="price" name="price" type="number" step="0.01" value={formData.price} onChange={handleChange} />
+                <Label htmlFor="price" className={styles.formLabel}>Preço *</Label>
+                <Input
+                    id="price"
+                    name="price"
+                    type="number"
+                    step="0.01"
+                    value={formData.price}
+                    onChange={handleChange}
+                    required
+                    min="0.01"
+                    placeholder="0.00"
+                />
             </div>
             <div className={styles.formField}>
                 <Label htmlFor="status" className={styles.formLabel}>Status</Label>

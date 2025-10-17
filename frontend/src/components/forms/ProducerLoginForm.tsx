@@ -51,11 +51,34 @@ export function ProducerLoginForm({
                 password: formData.password,
             });
 
-            const { access_token } = response.data;
+            console.log("Resposta da API de login:", response.data);
 
-            // Salva token e define header padrão
-            localStorage.setItem("authToken", access_token);
-            axios.defaults.headers.common["Authorization"] = `Bearer ${access_token}`;
+            // dj-rest-auth pode retornar diferentes formatos:
+            // - JWT: { access, refresh } ou { access_token, refresh_token }
+            // - Token: { key }
+            const accessToken = response.data.access_token ||
+                              response.data.access ||
+                              response.data.key;
+            const refreshToken = response.data.refresh_token || response.data.refresh;
+
+            if (!accessToken) {
+                throw new Error("Token de acesso não recebido da API");
+            }
+
+            // Salva o token (pode ser JWT ou Token simples)
+            localStorage.setItem("authToken", accessToken);
+            if (refreshToken) {
+                localStorage.setItem("refreshToken", refreshToken);
+            }
+
+            // Define header padrão
+            axios.defaults.headers.common["Authorization"] = `Token ${accessToken}`;
+
+            console.log("Tokens salvos no localStorage:", {
+                authToken: localStorage.getItem("authToken"),
+                refreshToken: localStorage.getItem("refreshToken"),
+                authHeader: axios.defaults.headers.common["Authorization"]
+            });
 
             // Redireciona para dashboard do produtor
             navigate("/dashboard-produtor");
