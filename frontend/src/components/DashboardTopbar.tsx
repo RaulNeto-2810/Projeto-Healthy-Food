@@ -5,7 +5,7 @@ import { IonIcon } from '@ionic/react';
 import { searchOutline, cartOutline, logOutOutline } from 'ionicons/icons';
 import { Link, useNavigate } from 'react-router-dom';
 
-import logoImg from '@/assets/logos/Logo.svg';
+import logoImg from '@/assets/logos/logo-light.svg';
 import styles from './DashboardTopbar.module.css';
 import axios from 'axios';
 

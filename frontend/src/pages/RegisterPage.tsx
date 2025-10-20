@@ -1,6 +1,6 @@
 // frontend/src/pages/LoginPage.tsx
 
-import logoImg from "@/assets/logos/Logo.svg"; // Usando o alias '@' que configuramos
+import logoImg from "@/assets/logos/logo-dark.svg"; // Usando o alias '@' que configuramos
 import { RegisterForm } from "@/components/forms/RegisterForm";
 
 export function RegisterPage() {

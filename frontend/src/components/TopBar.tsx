@@ -1,4 +1,4 @@
-import logoImg from '../assets/logos/Logo.svg'; // 1. Importa a imagem da logo
+import logoImg from '../assets/logos/logo-light.svg'; // 1. Importa a imagem da logo
 import styles from './TopBar.module.css';
 import { Link } from 'react-router-dom';
 

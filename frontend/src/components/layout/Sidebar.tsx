@@ -2,7 +2,7 @@
 
 import { Link, useLocation } from "react-router-dom";
 import { Home, ShoppingCart, Package, BarChart3, Store, Star } from "lucide-react";
-import logoImg from "@/assets/logos/Logo.svg";
+import logoImg from "@/assets/logos/logo-dark.svg";
 import styles from './Sidebar.module.css';
 
 // Dados dos links de navegação

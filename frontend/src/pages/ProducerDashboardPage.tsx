@@ -36,15 +36,32 @@ export function ProducerDashboardPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Aqui futuramente virá a chamada à API do backend
+        // Dados fictícios para demonstração
         setMetrics({
-            faturamento: 'R$ 0,00',
-            novosPedidos: 0,
-            produtosAtivos: 0,
-            avaliacaoMedia: 'N/A'
+            faturamento: 'R$ 12.450,00',
+            novosPedidos: 23,
+            produtosAtivos: 18,
+            avaliacaoMedia: '4.8'
         });
-        setSalesData([]);
-        setRecentOrders([]);
+
+        setSalesData([
+            { name: 'Seg', Vendas: 1850 },
+            { name: 'Ter', Vendas: 2200 },
+            { name: 'Qua', Vendas: 1950 },
+            { name: 'Qui', Vendas: 2800 },
+            { name: 'Sex', Vendas: 3100 },
+            { name: 'Sáb', Vendas: 2650 },
+            { name: 'Dom', Vendas: 1890 }
+        ]);
+
+        setRecentOrders([
+            { id: '1', customer: 'Maria Silva', amount: 'R$ 145,00', status: 'Entregue' },
+            { id: '2', customer: 'João Santos', amount: 'R$ 89,50', status: 'Em transporte' },
+            { id: '3', customer: 'Ana Costa', amount: 'R$ 234,00', status: 'Preparando' },
+            { id: '4', customer: 'Pedro Oliveira', amount: 'R$ 67,00', status: 'Entregue' },
+            { id: '5', customer: 'Carla Mendes', amount: 'R$ 198,50', status: 'Preparando' }
+        ]);
+
         setLoading(false);
     }, []);
 
@@ -65,7 +82,7 @@ export function ProducerDashboardPage() {
                                 <div className="text-2xl font-bold">
                                     {loading ? '...' : metrics?.faturamento}
                                 </div>
-                                <p className="text-xs text-gray-500">---</p>
+                                <p className="text-xs text-green-600">+12% em relação ao mês anterior</p>
                             </CardContent>
                         </Card>
 
@@ -77,7 +94,7 @@ export function ProducerDashboardPage() {
                                 <div className="text-2xl font-bold">
                                     {loading ? '...' : metrics?.novosPedidos}
                                 </div>
-                                <p className="text-xs text-gray-500">---</p>
+                                <p className="text-xs text-green-600">+8% em relação à semana anterior</p>
                             </CardContent>
                         </Card>
 
@@ -89,7 +106,7 @@ export function ProducerDashboardPage() {
                                 <div className="text-2xl font-bold">
                                     {loading ? '...' : metrics?.produtosAtivos}
                                 </div>
-                                <p className="text-xs text-gray-500">---</p>
+                                <p className="text-xs text-gray-500">Total no catálogo</p>
                             </CardContent>
                         </Card>
 
@@ -101,7 +118,7 @@ export function ProducerDashboardPage() {
                                 <div className="text-2xl font-bold">
                                     {loading ? '...' : metrics?.avaliacaoMedia} ⭐
                                 </div>
-                                <p className="text-xs text-gray-500">---</p>
+                                <p className="text-xs text-gray-500">Baseado em 127 avaliações</p>
                             </CardContent>
                         </Card>
                     </div>

@@ -1,7 +1,7 @@
 // frontend/src/pages/LoginPage.tsx
 
 import { LoginForm } from "@/components/forms/LoginForm";
-import logoImg from "@/assets/logos/Logo.svg"; 
+import logoImg from "@/assets/logos/logo-dark.svg"; 
 
 export function LoginPage() {
     return (

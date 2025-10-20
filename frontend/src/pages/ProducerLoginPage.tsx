@@ -1,7 +1,7 @@
 // frontend/src/pages/LoginPage.tsx
 
 import { ProducerLoginForm } from "@/components/forms/ProducerLoginForm";
-import logoImg from "@/assets/logos/Logo.svg"; // Usando o alias '@' que configuramos
+import logoImg from "@/assets/logos/logo-dark.svg"; // Usando o alias '@' que configuramos
 
 export function ProducerLoginPage() {
     return (
