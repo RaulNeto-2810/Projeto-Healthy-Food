@@ -1,7 +1,6 @@
 // frontend/src/components/DashboardTopbar.tsx
 
 import { IonIcon } from '@ionic/react';
-// REMOVIDO: 'locationOutline' não é mais necessário aqui
 import { searchOutline, cartOutline, logOutOutline } from 'ionicons/icons';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -20,9 +19,8 @@ export function DashboardTopbar() {
 
     return (
         <header className={styles.topbarContainer}>
-            
             <Link to="/dashboard-cliente">
-                <img src={logoImg} alt="Healthy Food Logo" className={styles.logo} /> 
+                <img src={logoImg} alt="Healthy Food Logo" className={styles.logo} />
             </Link>
 
             <div className={styles.searchWrapper}>

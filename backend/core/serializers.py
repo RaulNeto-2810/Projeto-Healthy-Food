@@ -51,3 +51,11 @@ class ProductSerializer(serializers.ModelSerializer):
         if not value or value.strip() == '':
             raise serializers.ValidationError("A categoria é obrigatória.")
         return value.strip()
+    
+class ProducerProfileSerializer(serializers.ModelSerializer):
+    # Poderíamos adicionar campos extras aqui no futuro, como imagem ou avaliação média
+    class Meta:
+        model = ProducerProfile
+        # Selecionamos os campos que queremos expor na API
+        fields = ['id', 'name', 'user_id'] 
+        # Podemos adicionar 'phone' ou outros se necessário para o card

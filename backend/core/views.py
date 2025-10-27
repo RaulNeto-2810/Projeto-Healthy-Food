@@ -5,9 +5,9 @@ from dj_rest_auth.registration.views import RegisterView # Importe
 from .serializers import ProducerRegisterSerializer      # Importe
 
 # --- ADICIONE ESTES IMPORTS ---
-from rest_framework import viewsets, permissions
-from .models import Product
-from .serializers import ProductSerializer
+from rest_framework import viewsets, permissions, generics
+from .models import Product, ProducerProfile
+from .serializers import ProductSerializer, ProducerProfileSerializer
 
 def index(request):
     return render(request, 'index.html')
@@ -54,3 +54,39 @@ class ProductViewSet(viewsets.ModelViewSet):
             from rest_framework.exceptions import PermissionDenied
             raise PermissionDenied("Você não tem permissão para acessar este produto.")
         return obj
+    
+class ProducerListView(generics.ListAPIView):
+    """
+    View para listar todos os perfis de produtores cadastrados.
+    Acessível por qualquer usuário (com ou sem autenticação).
+    """
+    queryset = ProducerProfile.objects.all().order_by('name') # Busca todos os perfis
+    serializer_class = ProducerProfileSerializer
+    permission_classes = [permissions.AllowAny] # Permite acesso sem autenticação
+
+class ProducerDetailView(generics.RetrieveAPIView):
+    """
+    View para obter detalhes de um produtor específico.
+    Acessível por qualquer usuário (com ou sem autenticação).
+    """
+    queryset = ProducerProfile.objects.all()
+    serializer_class = ProducerProfileSerializer
+    permission_classes = [permissions.AllowAny]
+
+class ProducerProductsView(generics.ListAPIView):
+    """
+    View para listar produtos de um produtor específico.
+    Acessível por qualquer usuário (com ou sem autenticação).
+    """
+    serializer_class = ProductSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        producer_id = self.kwargs.get('pk')
+        # Busca o perfil do produtor
+        try:
+            producer_profile = ProducerProfile.objects.get(pk=producer_id)
+            # Retorna os produtos do usuário associado ao produtor
+            return Product.objects.filter(owner=producer_profile.user).order_by('-created_at')
+        except ProducerProfile.DoesNotExist:
+            return Product.objects.none()

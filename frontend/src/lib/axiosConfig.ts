@@ -9,21 +9,7 @@ const axiosInstance = axios.create({
     baseURL: API_BASE_URL,
 });
 
-// Variável para controlar se já está renovando o token
-let isRefreshing = false;
-let failedQueue: any[] = [];
-
-const processQueue = (error: any, token: string | null = null) => {
-    failedQueue.forEach(prom => {
-        if (error) {
-            prom.reject(error);
-        } else {
-            prom.resolve(token);
-        }
-    });
-
-    failedQueue = [];
-};
+// Token refresh queue logic removed because refresh flow is not implemented yet.
 
 // Interceptor de requisição - adiciona o token automaticamente
 axiosInstance.interceptors.request.use(
@@ -40,6 +26,19 @@ axiosInstance.interceptors.request.use(
     }
 );
 
+// Lista de URLs públicas que não requerem autenticação
+const publicUrls = [
+    '/api/producers/',
+    '/api/producers',
+    '/auth/login',
+    '/auth/registration'
+];
+
+// Verifica se a URL é pública
+const isPublicUrl = (url: string) => {
+    return publicUrls.some(publicUrl => url.includes(publicUrl));
+};
+
 // Interceptor de resposta - trata erros 401
 axiosInstance.interceptors.response.use(
     (response) => {
@@ -54,8 +53,10 @@ axiosInstance.interceptors.response.use(
 
         // Se o erro for 401 (não autenticado)
         if (error.response?.status === 401) {
-            // Se NÃO for a URL de login
-            if (!error.config?.url?.includes('/auth/login')) {
+            const requestUrl = error.config?.url || '';
+
+            // Não redireciona se for uma URL pública
+            if (!isPublicUrl(requestUrl)) {
                 console.log("Token inválido/expirado - redirecionando para login");
                 localStorage.removeItem('authToken');
                 localStorage.removeItem('refreshToken');

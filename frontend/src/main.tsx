@@ -15,6 +15,7 @@ import { ProducerLoginPage } from './pages/ProducerLoginPage.tsx';
 import { ProducerRegisterPage } from './pages/ProducerRegisterPage.tsx';
 import { ClientDashboardPage } from './pages/ClientDashboardPage.tsx';
 import { ProducerDashboardPage } from './pages/ProducerDashboardPage.tsx';
+import { FarmProductsPage } from './pages/FarmProductsPage.tsx';
 
 // 1. Importe as novas páginas
 import { MyProductsPage } from './pages/MyProductsPage.tsx';
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
       { path: '/login-produtor', element: <ProducerLoginPage /> },
       { path: '/register-produtor', element: <ProducerRegisterPage /> },
       { path: '/dashboard-cliente', element: <ClientDashboardPage /> },
+      { path: '/fazenda/:producerId', element: <FarmProductsPage /> },
 
       // Rotas do Dashboard do Produtor
       { path: '/dashboard-produtor', element: <ProducerDashboardPage /> },

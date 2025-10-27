@@ -1,12 +1,49 @@
-/* frontend/src/pages/ClientDashboardPage.module.css */
+/* Adicione no final de frontend/src/pages/ClientDashboardPage.module.css */
 
 .dashboardLayout {
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
 }
 
 .mainContent {
-    flex-grow: 1;
-    padding: 2rem 8.5rem;
+    flex: 1;
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.producerGrid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    /* Cria a grade responsiva */
+    gap: 2rem;
+    margin-top: 2rem;
+    /* Espaço abaixo da FilterBar */
+}
+
+/* Estilos opcionais para o botão "Ver mais" */
+.viewMoreContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+}
+
+.viewMoreButton {
+    background: none;
+    border: none;
+    color: #00401f;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.viewMoreButton:hover {
+    text-decoration: underline;
 }
