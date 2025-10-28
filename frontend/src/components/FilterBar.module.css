@@ -47,6 +47,47 @@
     font-size: 1.5rem;
 }
 
+.dropdownWrapper {
+    position: relative;
+}
+
+.dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 0.5rem;
+    background-color: #fff;
+    border: 1.5px solid #00401f;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    min-width: 200px;
+    overflow: hidden;
+}
+
+.dropdownItem {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: transparent;
+    border: none;
+    text-align: left;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #00401f;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.dropdownItem:hover {
+    background-color: #f0f0f0;
+}
+
+.dropdownItem.active {
+    background-color: #00401f;
+    color: #fff;
+    font-weight: 600;
+}
+
 @media (max-width: 768px) {
     .filterSection {
         /* Centraliza tudo na tela do celular */

@@ -165,7 +165,10 @@ export function MyProductsPage() {
                                                     </TableCell>
                                                     <TableCell className={pageStyles.tableCellCenter}>{product.stock}</TableCell>
                                                     <TableCell className={pageStyles.tableCellRight}>
-                                                        {product.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                                                        {typeof product.price === 'number'
+                                                            ? product.price.toFixed(2).replace('.', ',')
+                                                            : parseFloat(product.price).toFixed(2).replace('.', ',')
+                                                        }
                                                     </TableCell>
                                                     <TableCell className={pageStyles.tableCellActions}>
                                                         <div className={pageStyles.actionsContainer}>

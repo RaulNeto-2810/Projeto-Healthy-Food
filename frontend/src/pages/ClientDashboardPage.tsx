@@ -12,11 +12,16 @@ import styles from "../styles/modules/ClientDashboardPage.module.css";
 interface ProducerProfileData {
     id: number;
     name: string;
+    categories: string[];
 }
 
 export function ClientDashboardPage() {
     // Estados para a lista de produtores, carregamento e erro
     const [producers, setProducers] = useState<ProducerProfileData[]>([]);
+    const [filteredProducers, setFilteredProducers] = useState<ProducerProfileData[]>([]);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [selectedCategory, setSelectedCategory] = useState<string>("Todas");
+    const [sortBy, setSortBy] = useState<string>("name-asc");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -24,6 +29,34 @@ export function ClientDashboardPage() {
     useEffect(() => {
         console.log('Estado atual:', { producers, loading, error });
     }, [producers, loading, error]);
+
+    // Filtra e ordena produtores
+    useEffect(() => {
+        let result = [...producers];
+
+        // Filtro por busca
+        if (searchTerm.trim() !== "") {
+            result = result.filter((producer) =>
+                producer.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        }
+
+        // Filtro por categoria
+        if (selectedCategory !== "Todas") {
+            result = result.filter((producer) =>
+                producer.categories && producer.categories.includes(selectedCategory)
+            );
+        }
+
+        // Ordenação
+        if (sortBy === "name-asc") {
+            result.sort((a, b) => a.name.localeCompare(b.name));
+        } else if (sortBy === "name-desc") {
+            result.sort((a, b) => b.name.localeCompare(a.name));
+        }
+
+        setFilteredProducers(result);
+    }, [searchTerm, selectedCategory, sortBy, producers]);
 
     // useEffect para buscar os produtores da API
     useEffect(() => {
@@ -71,19 +104,27 @@ export function ClientDashboardPage() {
 
     return (
         <div className={styles.dashboardLayout}>
-            <DashboardTopbar />
+            <DashboardTopbar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
 
             <main className={styles.mainContent}>
-                <FilterBar />
+                <FilterBar
+                    onCategoryChange={setSelectedCategory}
+                    onSortChange={setSortBy}
+                />
 
                 {/* Seção da Grade de Produtores */}
                 <div className={styles.producerGrid}>
                     {loading && <p className="col-span-full text-center">Carregando parceiros...</p>}
                     {error && <p className="col-span-full text-center text-red-500">{error}</p>}
+                    {!loading && !error && filteredProducers.length === 0 && producers.length > 0 && (
+                        <p className="col-span-full text-center text-gray-500">
+                            Nenhum produtor encontrado com "{searchTerm}".
+                        </p>
+                    )}
                     {!loading && !error && producers.length === 0 && (
                         <p className="col-span-full text-center text-gray-500">Nenhum parceiro encontrado.</p>
                     )}
-                    {!loading && !error && producers.map((producer) => (
+                    {!loading && !error && filteredProducers.map((producer) => (
                         <ProducerCard key={producer.id} producer={producer} />
                     ))}
                 </div>

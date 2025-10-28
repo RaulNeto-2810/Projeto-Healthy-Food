@@ -47,3 +47,27 @@
 .viewMoreButton:hover {
     text-decoration: underline;
 }
+
+.searchSection {
+    margin-bottom: 1.5rem;
+}
+
+.searchInput {
+    width: 100%;
+    max-width: 600px;
+    padding: 0.75rem 1.5rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #002914;
+    transition: border-color 0.2s;
+}
+
+.searchInput:focus {
+    outline: none;
+    border-color: #00401f;
+}
+
+.searchInput::placeholder {
+    color: #999;
+}
