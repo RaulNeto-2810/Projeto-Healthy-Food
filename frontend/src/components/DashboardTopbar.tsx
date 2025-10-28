@@ -1,15 +1,26 @@
 // frontend/src/components/DashboardTopbar.tsx
 
+import { useState } from 'react';
 import { IonIcon } from '@ionic/react';
-import { searchOutline, cartOutline, logOutOutline } from 'ionicons/icons';
+import { searchOutline, cartOutline, logOutOutline, receiptOutline } from 'ionicons/icons';
 import { Link, useNavigate } from 'react-router-dom';
+import { useCart } from '@/contexts/CartContext';
+import { ClientOrdersModal } from './ClientOrdersModal';
 
 import logoImg from '@/assets/logos/logo-light.svg';
 import styles from './DashboardTopbar.module.css';
 import axios from 'axios';
 
-export function DashboardTopbar() {
+interface DashboardTopbarProps {
+    searchTerm?: string;
+    onSearchChange?: (value: string) => void;
+    searchPlaceholder?: string;
+}
+
+export function DashboardTopbar({ searchTerm = '', onSearchChange, searchPlaceholder = 'Pesquise por algum produtor' }: DashboardTopbarProps) {
     const navigate = useNavigate();
+    const { openCart, items } = useCart();
+    const [showOrdersModal, setShowOrdersModal] = useState(false);
 
     const handleLogout = () => {
         localStorage.removeItem('authToken');
@@ -27,8 +38,10 @@ export function DashboardTopbar() {
                 <div className={styles.searchContainer}>
                     <input
                         type="text"
-                        placeholder="Pesquise por algum alimento"
+                        placeholder={searchPlaceholder}
                         className={styles.searchInput}
+                        value={searchTerm}
+                        onChange={(e) => onSearchChange?.(e.target.value)}
                     />
                     <div className={styles.searchIcon}>
                         <IonIcon icon={searchOutline} />
@@ -37,17 +50,26 @@ export function DashboardTopbar() {
             </div>
 
             <div className={styles.iconGroup}>
-                {/* REMOVIDO: O botão de localização foi apagado daqui */}
+                <button className={styles.iconButton} onClick={() => setShowOrdersModal(true)}>
+                    <IonIcon icon={receiptOutline} />
+                </button>
 
-                <button className={styles.iconButton}>
+                <button className={styles.iconButton} onClick={openCart}>
                     <IonIcon icon={cartOutline} />
-                    {/* REMOVIDO: O <span> com a classe 'cartBadge' foi apagado daqui */}
+                    {items.length > 0 && (
+                        <span className={styles.cartBadge}>{items.length}</span>
+                    )}
                 </button>
 
                 <button onClick={handleLogout} className={styles.iconButton}>
                     <IonIcon icon={logOutOutline} />
                 </button>
             </div>
+
+            <ClientOrdersModal
+                isOpen={showOrdersModal}
+                onClose={() => setShowOrdersModal(false)}
+            />
         </header>
     );
 }

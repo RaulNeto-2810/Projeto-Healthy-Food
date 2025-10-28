@@ -5,9 +5,11 @@ from dj_rest_auth.registration.views import RegisterView # Importe
 from .serializers import ProducerRegisterSerializer      # Importe
 
 # --- ADICIONE ESTES IMPORTS ---
-from rest_framework import viewsets, permissions, generics
-from .models import Product, ProducerProfile
-from .serializers import ProductSerializer, ProducerProfileSerializer
+from rest_framework import viewsets, permissions, generics, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from .models import Product, ProducerProfile, Order, OrderItem
+from .serializers import ProductSerializer, ProducerProfileSerializer, OrderSerializer, OrderStatusUpdateSerializer
 
 def index(request):
     return render(request, 'index.html')
@@ -90,3 +92,61 @@ class ProducerProductsView(generics.ListAPIView):
             return Product.objects.filter(owner=producer_profile.user).order_by('-created_at')
         except ProducerProfile.DoesNotExist:
             return Product.objects.none()
+
+class OrderViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet para gerenciar pedidos.
+    - Clientes podem criar pedidos (POST sem autenticação)
+    - Produtores podem ver seus pedidos e atualizar status
+    """
+    serializer_class = OrderSerializer
+    permission_classes = [permissions.AllowAny]  # Permite criação sem autenticação
+
+    def get_queryset(self):
+        """
+        Se o usuário estiver autenticado, retorna apenas seus pedidos.
+        Se houver um parâmetro client_phone, filtra por telefone do cliente.
+        Caso contrário, retorna vazio.
+        """
+        # Permite buscar pedidos por telefone do cliente (para clientes não autenticados)
+        client_phone = self.request.query_params.get('client_phone', None)
+        if client_phone:
+            return Order.objects.filter(client_phone=client_phone).order_by('-created_at')
+
+        # Para produtores autenticados, mostra apenas seus pedidos
+        if self.request.user.is_authenticated:
+            return Order.objects.filter(producer=self.request.user).order_by('-created_at')
+
+        return Order.objects.none()
+
+    def get_permissions(self):
+        """
+        Define permissões por ação:
+        - create: Qualquer pessoa (AllowAny)
+        - list: Qualquer pessoa (se tiver client_phone) ou autenticado
+        - retrieve, update, partial_update: Apenas autenticados
+        """
+        if self.action in ['create', 'list']:
+            return [permissions.AllowAny()]
+        return [permissions.IsAuthenticated()]
+
+    @action(detail=True, methods=['patch'], permission_classes=[permissions.IsAuthenticated])
+    def update_status(self, request, pk=None):
+        """
+        Endpoint para atualizar apenas o status do pedido.
+        PATCH /api/orders/{id}/update_status/
+        """
+        order = self.get_object()
+
+        # Verifica se o pedido pertence ao produtor logado
+        if order.producer != request.user:
+            return Response(
+                {"detail": "Você não tem permissão para atualizar este pedido."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        serializer = OrderStatusUpdateSerializer(order, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(OrderSerializer(order).data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

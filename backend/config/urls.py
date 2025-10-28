@@ -1,13 +1,14 @@
 # backend/config/urls.py
 from django.contrib import admin
 from django.urls import path, re_path, include
-from core.views import index, ProducerRegisterView, ProductViewSet, ProducerListView, ProducerDetailView, ProducerProductsView
+from core.views import index, ProducerRegisterView, ProductViewSet, ProducerListView, ProducerDetailView, ProducerProductsView, OrderViewSet
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenRefreshView
 
-# Crie um router para a API de produtos
+# Crie um router para a API de produtos e pedidos
 router = DefaultRouter()
 router.register(r'products', ProductViewSet, basename='product')
+router.register(r'orders', OrderViewSet, basename='order')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

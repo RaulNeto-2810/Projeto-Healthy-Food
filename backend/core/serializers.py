@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 from dj_rest_auth.registration.serializers import RegisterSerializer
-from .models import ProducerProfile, Product 
+from .models import ProducerProfile, Product, Order, OrderItem 
 
 class ProducerRegisterSerializer(RegisterSerializer):
     # Definimos os campos extras que virão do formulário
@@ -53,9 +53,51 @@ class ProductSerializer(serializers.ModelSerializer):
         return value.strip()
     
 class ProducerProfileSerializer(serializers.ModelSerializer):
-    # Poderíamos adicionar campos extras aqui no futuro, como imagem ou avaliação média
+    categories = serializers.SerializerMethodField()
+
     class Meta:
         model = ProducerProfile
         # Selecionamos os campos que queremos expor na API
-        fields = ['id', 'name', 'user_id'] 
+        fields = ['id', 'name', 'user_id', 'categories']
         # Podemos adicionar 'phone' ou outros se necessário para o card
+
+    def get_categories(self, obj):
+        """Retorna lista de categorias únicas dos produtos deste produtor"""
+        products = Product.objects.filter(owner=obj.user)
+        categories = products.values_list('category', flat=True).distinct()
+        return list(categories)
+
+class OrderItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderItem
+        fields = ['id', 'product', 'product_name', 'quantity', 'unit_price', 'subtotal']
+        read_only_fields = ['id']
+
+class OrderSerializer(serializers.ModelSerializer):
+    items = OrderItemSerializer(many=True)
+    producer_name = serializers.CharField(source='producer.producer_profile.name', read_only=True)
+
+    class Meta:
+        model = Order
+        fields = ['id', 'producer', 'producer_name', 'client_name', 'client_phone', 'client_email',
+                  'status', 'total_price', 'items', 'created_at', 'updated_at']
+        read_only_fields = ['id', 'created_at', 'updated_at']
+
+    def create(self, validated_data):
+        items_data = validated_data.pop('items')
+        order = Order.objects.create(**validated_data)
+
+        for item_data in items_data:
+            OrderItem.objects.create(order=order, **item_data)
+
+        return order
+
+class OrderStatusUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ['status']
+
+    def validate_status(self, value):
+        if value not in ['Pendente', 'Aceito', 'Cancelado', 'Entregue']:
+            raise serializers.ValidationError("Status inválido.")
+        return value

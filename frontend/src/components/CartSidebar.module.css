@@ -1,0 +1,474 @@
+/* frontend/src/components/CartSidebar.module.css */
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 400px;
+    max-width: 90vw;
+    height: 100vh;
+    background-color: white;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
+    background-color: #f8f8f8;
+}
+
+.title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #002914;
+    margin: 0;
+}
+
+.closeButton {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #666;
+    cursor: pointer;
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s;
+}
+
+.closeButton:hover {
+    color: #002914;
+}
+
+.content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+.emptyCart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: #999;
+    font-size: 1rem;
+}
+
+.producerGroup {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.producerGroup:last-child {
+    border-bottom: none;
+}
+
+.producerTitle {
+    font-size: 0.875rem;
+    color: #666;
+    margin: 0 0 0.25rem 0;
+}
+
+.producerName {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #002914;
+    margin: 0 0 0.5rem 0;
+}
+
+.producerSubtitle {
+    font-size: 0.875rem;
+    color: #666;
+    margin: 0 0 1rem 0;
+}
+
+.itemsList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.cartItem {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 0.75rem;
+}
+
+.itemInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.itemHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.itemName {
+    font-size: 0.9rem;
+    color: #002914;
+    flex: 1;
+}
+
+.itemPrice {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #00401f;
+    white-space: nowrap;
+    margin-left: 0.5rem;
+}
+
+.itemActions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.removeButton {
+    background: none;
+    border: none;
+    color: #dc2626;
+    font-size: 0.75rem;
+    cursor: pointer;
+    padding: 0.25rem 0;
+    transition: opacity 0.2s;
+}
+
+.removeButton:hover {
+    opacity: 0.7;
+}
+
+.quantityControl {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.quantityInput {
+    width: 50px;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    text-align: center;
+}
+
+.unit {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.producerFooter {
+    margin-top: 1rem;
+}
+
+.producerTotal {
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #002914;
+}
+
+.orderButton {
+    width: 100%;
+    background-color: #00401f;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.orderButton:hover {
+    background-color: #002914;
+}
+
+.whatsappButton {
+    width: 100%;
+    background-color: #25D366;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: background-color 0.2s;
+}
+
+.whatsappButton:hover {
+    background-color: #128C7E;
+}
+
+.whatsappButton ion-icon {
+    font-size: 1.25rem;
+}
+
+.footer {
+    padding: 1.5rem;
+    border-top: 2px solid #e0e0e0;
+    background-color: #f8f8f8;
+}
+
+.total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.totalLabel {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #002914;
+}
+
+.totalPrice {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #00401f;
+}
+
+/* Modal Styles */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal {
+    background-color: white;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.modalTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #002914;
+    margin: 0;
+}
+
+.modalCloseButton {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #666;
+    cursor: pointer;
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s;
+}
+
+.modalCloseButton:hover {
+    color: #002914;
+}
+
+.modalForm {
+    padding: 1.5rem;
+}
+
+.orderSummary {
+    background-color: #f8f8f8;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+
+.orderSummary h3 {
+    margin: 0 0 0.75rem 0;
+    font-size: 1rem;
+    color: #002914;
+}
+
+.orderSummary p {
+    margin: 0.5rem 0;
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.orderItems {
+    margin: 0.75rem 0;
+}
+
+.orderItem {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    font-size: 0.875rem;
+    color: #333;
+}
+
+.orderTotalLine {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 0.75rem;
+    margin-top: 0.75rem;
+    border-top: 2px solid #ddd;
+    font-size: 1rem;
+    color: #002914;
+}
+
+.formGroup {
+    margin-bottom: 1.25rem;
+}
+
+.formGroup label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #002914;
+}
+
+.formInput {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.9375rem;
+    color: #333;
+    transition: border-color 0.2s;
+}
+
+.formInput:focus {
+    outline: none;
+    border-color: #00401f;
+}
+
+.modalActions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.cancelButton,
+.submitButton {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cancelButton {
+    background-color: #f0f0f0;
+    color: #666;
+}
+
+.cancelButton:hover:not(:disabled) {
+    background-color: #e0e0e0;
+}
+
+.submitButton {
+    background-color: #00401f;
+    color: white;
+}
+
+.submitButton:hover:not(:disabled) {
+    background-color: #002914;
+}
+
+.cancelButton:disabled,
+.submitButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        max-width: 100vw;
+    }
+
+    .modal {
+        max-width: 100%;
+        margin: 0.5rem;
+    }
+}

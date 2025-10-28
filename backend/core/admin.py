@@ -1,6 +1,6 @@
 # backend/core/admin.py
 from django.contrib import admin
-from .models import ProducerProfile, Product
+from .models import ProducerProfile, Product, Order, OrderItem
 
 @admin.register(ProducerProfile)
 class ProducerProfileAdmin(admin.ModelAdmin):
@@ -26,3 +26,25 @@ class ProductAdmin(admin.ModelAdmin):
         if request.user.is_superuser:
             return qs
         return qs.filter(owner=request.user)
+
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
+    extra = 0
+    readonly_fields = ('product', 'product_name', 'quantity', 'unit_price', 'subtotal')
+    can_delete = False
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('id', 'client_name', 'producer', 'status', 'total_price', 'created_at')
+    list_filter = ('status', 'created_at')
+    search_fields = ('client_name', 'client_phone', 'client_email', 'producer__username')
+    readonly_fields = ('producer', 'client_name', 'client_phone', 'client_email', 'total_price', 'created_at', 'updated_at')
+    inlines = [OrderItemInline]
+    ordering = ('-created_at',)
+
+    def get_queryset(self, request):
+        """Produtores só veem seus próprios pedidos"""
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(producer=request.user)
