@@ -61,10 +61,20 @@ class ProducerListView(generics.ListAPIView):
     """
     View para listar todos os perfis de produtores cadastrados.
     Acessível por qualquer usuário (com ou sem autenticação).
+    Filtra apenas produtores reais (exclui admins e staff).
     """
-    queryset = ProducerProfile.objects.all().order_by('name') # Busca todos os perfis
     serializer_class = ProducerProfileSerializer
     permission_classes = [permissions.AllowAny] # Permite acesso sem autenticação
+
+    def get_queryset(self):
+        """
+        Retorna apenas perfis de produtores válidos.
+        Exclui usuários staff, superusers e perfis sem dados completos.
+        """
+        return ProducerProfile.objects.filter(
+            user__is_staff=False,
+            user__is_superuser=False
+        ).order_by('name')
 
 class ProducerDetailView(generics.RetrieveAPIView):
     """
@@ -92,6 +102,26 @@ class ProducerProductsView(generics.ListAPIView):
             return Product.objects.filter(owner=producer_profile.user).order_by('-created_at')
         except ProducerProfile.DoesNotExist:
             return Product.objects.none()
+
+class MyProducerProfileView(generics.RetrieveUpdateAPIView):
+    """
+    View para obter e atualizar o perfil do produtor logado.
+    GET /api/my-profile/ - Retorna o perfil do produtor logado
+    PATCH /api/my-profile/ - Atualiza o perfil do produtor logado
+    """
+    serializer_class = ProducerProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        """
+        Retorna o perfil do produtor associado ao usuário logado.
+        Se não existir, retorna 404.
+        """
+        try:
+            return ProducerProfile.objects.get(user=self.request.user)
+        except ProducerProfile.DoesNotExist:
+            from rest_framework.exceptions import NotFound
+            raise NotFound("Perfil de produtor não encontrado para este usuário.")
 
 class OrderViewSet(viewsets.ModelViewSet):
     """

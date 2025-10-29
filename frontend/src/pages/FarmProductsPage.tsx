@@ -18,6 +18,9 @@ interface ProducerData {
     id: number;
     name: string;
     user_id: number;
+    city?: string;
+    phone?: string;
+    address?: string;
 }
 
 // Interface para os dados do produto
@@ -172,9 +175,17 @@ export function FarmProductsPage() {
 
                 {/* Cabeçalho da Fazenda */}
                 <div className={styles.farmHeader}>
-                    <h1 className={styles.farmName}>{producer?.name || "Fazenda"}</h1>
+                    <h1 className={styles.farmName}>Produtor: {producer?.name || "Fazenda"}</h1>
                     <div className={styles.farmInfo}>
-                        <span className={styles.farmLocation}>📍 Ituiutaba - MG</span>
+                        {producer?.city && (
+                            <span className={styles.farmLocation}>📍 {producer.city}</span>
+                        )}
+                        {producer?.phone && (
+                            <span className={styles.farmContact}>📞 {producer.phone}</span>
+                        )}
+                        {producer?.address && (
+                            <span className={styles.farmAddress}>🏠 {producer.address}</span>
+                        )}
                         <div className={styles.farmRating}>
                             <span>Avaliação:</span>
                             <div className={styles.stars}>💚💚💚🤍🤍</div>

@@ -54,18 +54,32 @@ class ProductSerializer(serializers.ModelSerializer):
     
 class ProducerProfileSerializer(serializers.ModelSerializer):
     categories = serializers.SerializerMethodField()
+    email = serializers.EmailField(source='user.email', read_only=True)
 
     class Meta:
         model = ProducerProfile
         # Selecionamos os campos que queremos expor na API
-        fields = ['id', 'name', 'user_id', 'categories']
-        # Podemos adicionar 'phone' ou outros se necessário para o card
+        fields = ['id', 'name', 'cpf_cnpj', 'phone', 'city', 'address', 'email', 'user_id', 'categories']
+        # CPF/CNPJ e email são read-only (não podem ser alterados)
+        read_only_fields = ['id', 'cpf_cnpj', 'user_id', 'email']
 
     def get_categories(self, obj):
         """Retorna lista de categorias únicas dos produtos deste produtor"""
         products = Product.objects.filter(owner=obj.user)
         categories = products.values_list('category', flat=True).distinct()
         return list(categories)
+
+    def validate_name(self, value):
+        """Valida que o nome não seja vazio."""
+        if not value or value.strip() == '':
+            raise serializers.ValidationError("O nome não pode ser vazio.")
+        return value.strip()
+
+    def validate_phone(self, value):
+        """Valida o formato do telefone."""
+        if value and len(value.strip()) < 10:
+            raise serializers.ValidationError("Telefone inválido. Digite um número válido.")
+        return value.strip() if value else value
 
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:

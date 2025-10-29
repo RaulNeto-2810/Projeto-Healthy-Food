@@ -1,7 +1,7 @@
 # backend/config/urls.py
 from django.contrib import admin
 from django.urls import path, re_path, include
-from core.views import index, ProducerRegisterView, ProductViewSet, ProducerListView, ProducerDetailView, ProducerProductsView, OrderViewSet
+from core.views import index, ProducerRegisterView, ProductViewSet, ProducerListView, ProducerDetailView, ProducerProductsView, OrderViewSet, MyProducerProfileView
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenRefreshView
 
@@ -18,6 +18,7 @@ urlpatterns = [
     path('api/producers/', ProducerListView.as_view(), name='producer-list'),
     path('api/producers/<int:pk>/', ProducerDetailView.as_view(), name='producer-detail'),
     path('api/producers/<int:pk>/products/', ProducerProductsView.as_view(), name='producer-products'),
+    path('api/my-profile/', MyProducerProfileView.as_view(), name='my-producer-profile'),
 
     path('api/auth/', include('dj_rest_auth.urls')),
     path('api/auth/registration/', include('dj_rest_auth.registration.urls')),

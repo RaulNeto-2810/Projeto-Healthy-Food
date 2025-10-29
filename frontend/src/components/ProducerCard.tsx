@@ -32,7 +32,7 @@ export function ProducerCard({ producer }: ProducerCardProps) {
                 <img src={iconeFazenda} alt={`Fazenda ${producer.name}`} className={styles.farmImage} />
             </div>
             <div className={styles.cardContent}>
-                <h3 className={styles.producerName}>{producer.name}</h3>
+                <h3 className={styles.producerName}>Produtor: {producer.name}</h3>
                 <div className={styles.ratingContainer}>
                     <span className={styles.ratingLabel}>Avaliação:</span>
                     <div className={styles.hearts}>

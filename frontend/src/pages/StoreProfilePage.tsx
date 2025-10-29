@@ -1,6 +1,7 @@
 // frontend/src/pages/StoreProfilePage.tsx
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Header } from "@/components/layout/Header";
+import { ProducerProfile } from "@/components/ProducerProfile";
 import styles from '../styles/modules/ProducerDashboardPage.module.css';
 
 export function StoreProfilePage() {
@@ -10,6 +11,7 @@ export function StoreProfilePage() {
             <div className={styles.mainWrapper}>
                 <Header title="Perfil da Loja" />
                 <main className={styles.mainContent}>
+                    <ProducerProfile />
                 </main>
             </div>
         </div>
