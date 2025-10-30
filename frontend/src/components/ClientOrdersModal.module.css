@@ -321,3 +321,208 @@
         border-radius: 0;
     }
 }
+
+/* Rating Button */
+.rateButton {
+    width: 100%;
+    background-color: #00401f;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.875rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.rateButton:hover {
+    background-color: #006633;
+    transform: translateY(-1px);
+}
+
+.rateButton:active {
+    transform: translateY(0);
+}
+
+/* Rated Badge */
+.ratedBadge {
+    width: 100%;
+    background-color: #d1fae5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+    border-radius: 8px;
+    padding: 0.875rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+/* Rating Modal */
+.ratingOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1001;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.ratingModal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    z-index: 1002;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    animation: slideIn 0.3s ease-out;
+}
+
+.ratingHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 2px solid #e0e0e0;
+    background: #f8f9fa;
+    border-radius: 12px 12px 0 0;
+}
+
+.ratingHeader h3 {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #002914;
+}
+
+.ratingContent {
+    padding: 2rem;
+}
+
+.ratingLabel {
+    margin: 0 0 1.5rem 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+}
+
+/* Stars Container */
+.starsContainer {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.starButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.2s;
+}
+
+.starButton:hover {
+    transform: scale(1.2);
+}
+
+.star {
+    font-size: 2.5rem;
+    display: block;
+}
+
+/* Comment Textarea */
+.commentTextarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 0.875rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    font-family: inherit;
+    resize: vertical;
+    margin-bottom: 1.5rem;
+    transition: border-color 0.2s;
+}
+
+.commentTextarea:focus {
+    outline: none;
+    border-color: #00401f;
+}
+
+.commentTextarea::placeholder {
+    color: #999;
+}
+
+/* Rating Actions */
+.ratingActions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.cancelButton,
+.submitButton {
+    flex: 1;
+    padding: 0.875rem;
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cancelButton {
+    background: white;
+    border: 2px solid #e0e0e0;
+    color: #666;
+}
+
+.cancelButton:hover:not(:disabled) {
+    border-color: #999;
+    color: #333;
+}
+
+.submitButton {
+    background-color: #00401f;
+    border: 2px solid #00401f;
+    color: white;
+}
+
+.submitButton:hover:not(:disabled) {
+    background-color: #006633;
+    border-color: #006633;
+}
+
+.submitButton:disabled,
+.cancelButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Responsive for Rating Modal */
+@media (max-width: 480px) {
+    .ratingModal {
+        width: 95%;
+    }
+
+    .ratingContent {
+        padding: 1.5rem;
+    }
+
+    .star {
+        font-size: 2rem;
+    }
+
+    .starsContainer {
+        gap: 0.5rem;
+    }
+}

@@ -68,3 +68,31 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.quantity}x {self.product_name}"
+
+class Rating(models.Model):
+    """
+    Modelo para armazenar avaliações de produtores.
+    Apenas clientes que receberam pedidos podem avaliar.
+    """
+    producer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ratings_received')
+    order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name='rating')
+    client_name = models.CharField(max_length=255)
+    client_phone = models.CharField(max_length=20)
+    score = models.PositiveIntegerField()  # 1 a 5
+    comment = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        # Garante que cada pedido só pode ter uma avaliação
+        unique_together = ['order']
+
+    def __str__(self):
+        return f"Avaliação {self.score}/5 - {self.producer.producer_profile.name}"
+
+    def clean(self):
+        from django.core.exceptions import ValidationError
+        if self.score < 1 or self.score > 5:
+            raise ValidationError('A avaliação deve ser entre 1 e 5.')
+        if self.order.status != 'Entregue':
+            raise ValidationError('Só é possível avaliar pedidos entregues.')

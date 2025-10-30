@@ -8,8 +8,8 @@ from .serializers import ProducerRegisterSerializer      # Importe
 from rest_framework import viewsets, permissions, generics, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import Product, ProducerProfile, Order, OrderItem
-from .serializers import ProductSerializer, ProducerProfileSerializer, OrderSerializer, OrderStatusUpdateSerializer
+from .models import Product, ProducerProfile, Order, OrderItem, Rating
+from .serializers import ProductSerializer, ProducerProfileSerializer, OrderSerializer, OrderStatusUpdateSerializer, RatingSerializer
 
 def index(request):
     return render(request, 'index.html')
@@ -180,3 +180,31 @@ class OrderViewSet(viewsets.ModelViewSet):
             serializer.save()
             return Response(OrderSerializer(order).data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class RatingViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet para gerenciar avaliações de produtores.
+    - Clientes podem criar avaliações após confirmar entrega (POST sem autenticação)
+    - Qualquer pessoa pode ver as avaliações de um produtor
+    """
+    serializer_class = RatingSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        """
+        Retorna avaliações filtradas por produtor se especificado.
+        """
+        producer_id = self.request.query_params.get('producer_id', None)
+        if producer_id:
+            return Rating.objects.filter(producer__producer_profile__id=producer_id).order_by('-created_at')
+        return Rating.objects.all().order_by('-created_at')
+
+    def create(self, request, *args, **kwargs):
+        """
+        Cria uma nova avaliação para um pedido entregue.
+        """
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)

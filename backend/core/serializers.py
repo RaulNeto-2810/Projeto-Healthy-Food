@@ -2,7 +2,8 @@
 
 from rest_framework import serializers
 from dj_rest_auth.registration.serializers import RegisterSerializer
-from .models import ProducerProfile, Product, Order, OrderItem 
+from .models import ProducerProfile, Product, Order, OrderItem, Rating
+from django.db.models import Avg 
 
 class ProducerRegisterSerializer(RegisterSerializer):
     # Definimos os campos extras que virão do formulário
@@ -55,19 +56,30 @@ class ProductSerializer(serializers.ModelSerializer):
 class ProducerProfileSerializer(serializers.ModelSerializer):
     categories = serializers.SerializerMethodField()
     email = serializers.EmailField(source='user.email', read_only=True)
+    average_rating = serializers.SerializerMethodField()
+    total_ratings = serializers.SerializerMethodField()
 
     class Meta:
         model = ProducerProfile
         # Selecionamos os campos que queremos expor na API
-        fields = ['id', 'name', 'cpf_cnpj', 'phone', 'city', 'address', 'email', 'user_id', 'categories']
+        fields = ['id', 'name', 'cpf_cnpj', 'phone', 'city', 'address', 'email', 'user_id', 'categories', 'average_rating', 'total_ratings']
         # CPF/CNPJ e email são read-only (não podem ser alterados)
-        read_only_fields = ['id', 'cpf_cnpj', 'user_id', 'email']
+        read_only_fields = ['id', 'cpf_cnpj', 'user_id', 'email', 'average_rating', 'total_ratings']
 
     def get_categories(self, obj):
         """Retorna lista de categorias únicas dos produtos deste produtor"""
         products = Product.objects.filter(owner=obj.user)
         categories = products.values_list('category', flat=True).distinct()
         return list(categories)
+
+    def get_average_rating(self, obj):
+        """Calcula a média das avaliações do produtor"""
+        avg = Rating.objects.filter(producer=obj.user).aggregate(Avg('score'))['score__avg']
+        return round(avg, 1) if avg else 0
+
+    def get_total_ratings(self, obj):
+        """Retorna o total de avaliações do produtor"""
+        return Rating.objects.filter(producer=obj.user).count()
 
     def validate_name(self, value):
         """Valida que o nome não seja vazio."""
@@ -90,12 +102,22 @@ class OrderItemSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True)
     producer_name = serializers.CharField(source='producer.producer_profile.name', read_only=True)
+    has_rating = serializers.SerializerMethodField()
+    rating_score = serializers.SerializerMethodField()
 
     class Meta:
         model = Order
         fields = ['id', 'producer', 'producer_name', 'client_name', 'client_phone', 'client_email',
-                  'status', 'total_price', 'items', 'created_at', 'updated_at']
-        read_only_fields = ['id', 'created_at', 'updated_at']
+                  'status', 'total_price', 'items', 'created_at', 'updated_at', 'has_rating', 'rating_score']
+        read_only_fields = ['id', 'created_at', 'updated_at', 'has_rating', 'rating_score']
+
+    def get_has_rating(self, obj):
+        """Verifica se o pedido já foi avaliado"""
+        return hasattr(obj, 'rating')
+
+    def get_rating_score(self, obj):
+        """Retorna a nota da avaliação se existir"""
+        return obj.rating.score if hasattr(obj, 'rating') else None
 
     def create(self, validated_data):
         items_data = validated_data.pop('items')
@@ -115,3 +137,46 @@ class OrderStatusUpdateSerializer(serializers.ModelSerializer):
         if value not in ['Pendente', 'Aceito', 'Cancelado', 'Entregue']:
             raise serializers.ValidationError("Status inválido.")
         return value
+
+class RatingSerializer(serializers.ModelSerializer):
+    producer_name = serializers.CharField(source='producer.producer_profile.name', read_only=True)
+    order_id = serializers.IntegerField(write_only=True)
+
+    class Meta:
+        model = Rating
+        fields = ['id', 'producer', 'producer_name', 'order_id', 'client_name', 'client_phone', 'score', 'comment', 'created_at']
+        read_only_fields = ['id', 'producer', 'producer_name', 'created_at']
+
+    def validate_score(self, value):
+        """Valida que a nota seja entre 1 e 5"""
+        if value < 1 or value > 5:
+            raise serializers.ValidationError("A avaliação deve ser entre 1 e 5.")
+        return value
+
+    def validate(self, data):
+        """Valida que o pedido existe, está entregue e não foi avaliado"""
+        order_id = data.get('order_id')
+
+        try:
+            order = Order.objects.get(id=order_id)
+        except Order.DoesNotExist:
+            raise serializers.ValidationError({"order_id": "Pedido não encontrado."})
+
+        # Verifica se o pedido foi entregue
+        if order.status != 'Entregue':
+            raise serializers.ValidationError({"order_id": "Só é possível avaliar pedidos entregues."})
+
+        # Verifica se já existe avaliação para este pedido
+        if hasattr(order, 'rating'):
+            raise serializers.ValidationError({"order_id": "Este pedido já foi avaliado."})
+
+        # Adiciona o pedido e o produtor aos dados validados
+        data['order'] = order
+        data['producer'] = order.producer
+
+        return data
+
+    def create(self, validated_data):
+        # Remove order_id pois já temos o objeto order
+        validated_data.pop('order_id', None)
+        return super().create(validated_data)

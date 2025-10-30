@@ -9,7 +9,8 @@ import { useNavigate } from 'react-router-dom';
 interface ProducerProfileData {
     id: number;
     name: string;
-    // Adicionaremos mais campos como imagem e avaliação no futuro
+    average_rating?: number;
+    total_ratings?: number;
 }
 
 interface ProducerCardProps {
@@ -17,8 +18,8 @@ interface ProducerCardProps {
 }
 
 export function ProducerCard({ producer }: ProducerCardProps) {
-    // Simulação de avaliação (ex: 3 de 5 corações)
-    const rating = 3;
+    // Usa a avaliação real da API (arredonda para baixo para exibir corações cheios)
+    const rating = Math.floor(producer.average_rating || 0);
     const navigate = useNavigate();
 
     const handleCardClick = () => {

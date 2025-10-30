@@ -21,6 +21,8 @@ interface ProducerData {
     city?: string;
     phone?: string;
     address?: string;
+    average_rating?: number;
+    total_ratings?: number;
 }
 
 // Interface para os dados do produto
@@ -188,7 +190,18 @@ export function FarmProductsPage() {
                         )}
                         <div className={styles.farmRating}>
                             <span>Avaliação:</span>
-                            <div className={styles.stars}>💚💚💚🤍🤍</div>
+                            <div className={styles.stars}>
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                    <span key={star}>
+                                        {star <= Math.floor(producer?.average_rating || 0) ? '💚' : '🤍'}
+                                    </span>
+                                ))}
+                            </div>
+                            {producer?.total_ratings !== undefined && (
+                                <span className={styles.ratingCount}>
+                                    ({producer.total_ratings} {producer.total_ratings === 1 ? 'avaliação' : 'avaliações'})
+                                </span>
+                            )}
                         </div>
                     </div>
                 </div>
